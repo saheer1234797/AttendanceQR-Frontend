@@ -1,0 +1,20 @@
+
+.auth-container {
+  min-height: 100vh;
+  background-color: #0d6efd;
+  /* background-color: E6F1FF; */
+
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+ 
+}
+
+.qr-logo {
+  height: 30px;
+  margin-right: 8px;
+  vertical-align: middle;
+ 
+}

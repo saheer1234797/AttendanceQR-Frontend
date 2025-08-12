@@ -1,0 +1,132 @@
+/* src/components/GenerateQR/GenerateQR.css */
+
+.qr-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 28px;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.qr-card {
+  width: 760px;
+  max-width: 96%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.qr-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.hint {
+  margin: 0 0 16px;
+  color: #555;
+  font-size: 13px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.btn-generate {
+  background: linear-gradient(90deg,#2563eb,#06b6d4);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(6, 95, 205, 0.12);
+}
+
+.btn-generate[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.qr-error {
+  margin-top: 8px;
+  color: #b91c1c;
+  background: #fff5f5;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.qr-info {
+  margin-top: 12px;
+}
+
+.qr-info table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.qr-info td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.qr-preview {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.qr-preview img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.qr-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-download, .btn-refresh {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-download {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-refresh {
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.qr-empty {
+  margin-top: 16px;
+  text-align: center;
+  color: #666;
+}
+
+.placeholder {
+  width: 140px;
+  opacity: 0.25;
+}
+.scan-note {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #555;
+}
