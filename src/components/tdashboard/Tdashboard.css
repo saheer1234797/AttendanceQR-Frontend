@@ -3,6 +3,8 @@ body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background-color: #f7f9fc;
+
+   
 }
 
 .tdashboard-container {
@@ -12,7 +14,8 @@ body {
 
 .sidebar {
   width: 220px;
-  background-color: #111827;
+  /* background-color: #111827; */
+   background: linear-gradient(405deg, #007bff, #07414d);
   color: white;
   padding: 20px;
   height: 100vh;
@@ -23,6 +26,7 @@ body {
 .sidebar h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
+ 
 }
 
 .sidebar ul {
@@ -56,7 +60,9 @@ body {
 .card {
   background-color: white;
   padding: 20px;
-  border-left: 5px solid #2563eb;
+  border-left: 6px solid #00d4ff ;
+   
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   flex: 1;
   min-width: 200px;
@@ -80,7 +86,9 @@ body {
 
 .scan-btn {
   padding: 10px 20px;
-  background-color: #2563eb;
+  /* background-color: #2563eb; */
+   background: linear-gradient(45deg, #007bff, #00d4ff);
+  
   color: white;
   border: none;
   border-radius: 6px;

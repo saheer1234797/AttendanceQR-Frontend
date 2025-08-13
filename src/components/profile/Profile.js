@@ -56,11 +56,7 @@ function Sprofile() {
             <span className="label">Email:</span>
             <span>{student.email}</span>
           </div>
-          {/* Uncomment if needed */}
-          {/* <div className="info-row">
-            <span className="label">Branch:</span>
-            <span>{student.branch}</span>
-          </div> */}
+         
         </div>
       </div>
     </div>

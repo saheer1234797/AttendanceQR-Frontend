@@ -11,12 +11,8 @@ export default {
 ,
 QR:BASE_URL+"/scanQR/scanQR",
 
-          StudentAttendance:BASE_URL+"/Attendce/st"
+          StudentAttendance:BASE_URL+"/Attendce/st",
+          SendEmail:BASE_URL+"/email/email"
 
 
-
-
-
-  // AllStudents:BASE_URL+ "/Attendce/st",      
-  // TodayAttendance: "/admin/todaysAttendance"
 }

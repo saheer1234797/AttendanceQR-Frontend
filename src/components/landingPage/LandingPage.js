@@ -5,7 +5,7 @@ import "./LandingPage.css";
 function LandingPage() {
   return (
     <div className="homepage">
-      {/* Hero Section */}
+  
       <section className="hero-section">
         <div className="overlay"></div>
         <div className="hero-content">
@@ -24,18 +24,28 @@ function LandingPage() {
       <section className="about-section">
         <div className="container">
           <h2>Why QR Attend?</h2>
-          <p>
-            Our system helps schools, colleges, and organizations manage
+  
+          
+              
+              <p>Our system helps schools, colleges, and organizations manage
             attendance in real-time using QR code scanning. Simple to use,
-            secure, and easy to integrate.
-          </p>
+            secure, and easy to integrate.</p>
+          
         </div>
       </section>
 
       {/* Features Section */}
       <section className="features-section">
         <div className="container">
-          <h2>Key Features</h2>
+
+
+      <h2 >Key Features</h2>
+
+
+    
+
+
+
           <div className="features-grid">
             <div className="feature-card">
               <i className="bi bi-qr-code-scan"></i>
@@ -55,6 +65,24 @@ function LandingPage() {
                 charts.
               </p>
             </div>
+
+
+{/* 
+ok
+
+*/}
+  <div className="feature-card">
+              <i className="bi bi-journal-check"></i>
+              <h3>Flexible Manual Attendance</h3>
+              <p>
+              Never miss an attendee. Quick manual entry ensures 100% accuracy when you need it.
+              </p>
+            </div>
+
+
+
+{/* end add somthing for testing ok */}
+
           </div>
         </div>
       </section>
@@ -62,8 +90,9 @@ function LandingPage() {
       {/* Call to Action */}
       <section className="cta-section">
         <h2>Ready to simplify attendance?</h2>
-        <p>Join hundreds of institutions already using QR Attend.</p>
+        <p>Start with QR Attend today and join our exclusive group of early adopters.</p>
         <a href="/signup" className="btn-secondary">
+
           Create an Account
         </a>
       </section>

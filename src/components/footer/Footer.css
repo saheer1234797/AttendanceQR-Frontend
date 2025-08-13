@@ -1,9 +1,10 @@
 
-
 .footer {
-  background-color: #121212;
-  color: white;
-  padding: 40px 0;
+
+  background: linear-gradient(45deg, #007bff, #00d4ff);
+
+  color: #ffffff;
+  padding: 20px 0;
 }
 
 .footer-content {
@@ -26,13 +27,16 @@
 }
 
 .social-icon {
-  color: white;
+  color: #ffffff;
   font-size: 1.5rem;   
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .social-icon:hover {
-  color: #0d6efd; 
+
+  color: #ffeb3b;
   transform: scale(1.2);
 }
+ 
+
 

@@ -6,9 +6,9 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-content">
-        <p className="footer-text">
-          © {new Date().getFullYear()} QR Attendance System | Made with ❤️ by Saheer
-        </p>
+      <p className="footer-text">
+  QR Attendance System | Designed & Developed by Saheer
+</p>
         <div className="social-links">
           <a
             href="https://linkedin.com/in/saheer-khan-9b7995285"
@@ -36,4 +36,6 @@ function Footer() {
 }
 
 export default Footer;
+
+
 

@@ -1,8 +1,9 @@
-// src/components/GenerateQR/GenerateQR.jsx
+
+
 import React, { useState } from "react";
 import axios from "axios";
-import "../genrqteqr/GenrateQr.css"
-import Endpoint from "../../apis/Endpoint"; // 
+import "../genrqteqr/GenrateQr.css";
+import Endpoint from "../../apis/Endpoint";
 
 export default function GenerateQR() {
   const [loading, setLoading] = useState(false);
@@ -10,39 +11,31 @@ export default function GenerateQR() {
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
+  const handleGenerate = async () => {
+    setError("");
+    setLoading(true);
 
+    try {
+      const res = await axios.get(Endpoint.GenerateQR, { withCredentials: true });
 
-const handleGenerate = async () => {
-  setError("");
-  setLoading(true);
+      console.log("Full API Response:", res.data);
 
-  try {
-    const res = await axios.get(Endpoint.GenerateQR, { withCredentials: true });
+      const { filePath, qrData } = res.data; 
+      const backendBaseURL = "http://localhost:3000";
 
-  
-    const { filePath, qrData } = res.data;
-    ///ye ,ane add kiya hai
-const backendBaseURL = "http://localhost:3000"; 
-//end of the code 
-    // const clientPath = filePath.startsWith("/public")
-    //   ? `${window.location.origin}${filePath.replace("/public", "")}`
-    //   : `${window.location.origin}${filePath}`;
+      const clientPath = filePath.startsWith("/public")
+        ? `${backendBaseURL}${filePath.replace("/public", "")}`
+        : `${backendBaseURL}${filePath}`;
 
-    const clientPath = filePath.startsWith("/public")
-      ? `${backendBaseURL}${filePath.replace("/public", "")}`
-      : `${backendBaseURL}${filePath}`;
-
-
-    setQrData(qrData || null);
-    setImageUrl(clientPath);
-  } catch (err) {
-    console.error("Generate QR error:", err);
-    setError(err?.response?.data?.message || "Failed to generate QR");
-  } finally {
-    setLoading(false);
-  }
-};
-
+      setQrData(qrData || null); 
+      setImageUrl(clientPath);
+    } catch (err) {
+      console.error("Generate QR error:", err);
+      setError(err?.response?.data?.message || "Failed to generate QR");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="qr-wrapper">
@@ -50,7 +43,7 @@ const backendBaseURL = "http://localhost:3000";
         <h2>Generate QR Code</h2>
 
         <p className="hint">
-          Click the button below to generate your personal QR code. Only students can generate.
+          Click the button below to generate your personal QR code. Only teacher can generate.
         </p>
 
         <div className="controls">
@@ -66,14 +59,26 @@ const backendBaseURL = "http://localhost:3000";
         {error && <div className="qr-error">{error}</div>}
 
         {qrData && (
-          <div className="qr-info">
+          <div className="qr-info" style={{ color: "black", background: "#f0f0f0", padding: "10px", borderRadius: "6px" }}>
             <h3>QR Details</h3>
-            <table>
+            <table style={{ width: "100%", color: "black" }}>
               <tbody>
-                <tr><td>Name</td><td>{qrData.name}</td></tr>
-                <tr><td>Email</td><td>{qrData.email}</td></tr>
-                <tr><td>UUID</td><td>{qrData.uuid}</td></tr>
-                <tr><td>Time</td><td>{new Date(qrData.timeStamp).toLocaleString()}</td></tr>
+                <tr>
+                  <td>Name</td>
+                  <td>{qrData.teacherName}</td>
+                </tr>
+                <tr>
+                  <td>Teacher ID</td>
+                  <td>{qrData.teacherId}</td>
+                </tr>
+                <tr>
+                  <td>QrID</td>
+                  <td>{qrData.qrId}</td>
+                </tr>
+                <tr>
+                  <td>Time</td>
+                  <td>{new Date(qrData.timeStamp).toLocaleString()}</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -82,16 +87,36 @@ const backendBaseURL = "http://localhost:3000";
         {imageUrl ? (
           <div className="qr-preview">
             <h3>Your QR Code</h3>
-            <img src={imageUrl} alt="Student QR" />
+            <img src={imageUrl} alt="QR Code" />
             <div className="qr-actions">
-              <a href={imageUrl} download={`qr-${qrData?.studentId || "code"}.png`} className="btn-download">Download</a>
-              <button className="btn-refresh" onClick={() => { setImageUrl(""); setQrData(null); }}>Clear</button>
+              <a
+                href={imageUrl}
+                download={`qr-${qrData?.teacherId || "code"}.png`}
+                className="btn-download"
+              >
+                Download
+              </a>
+              <button
+                className="btn-refresh"
+                onClick={() => {
+                  setImageUrl("");
+                  setQrData(null);
+                }}
+              >
+                Clear
+              </button>
             </div>
-            <p className="scan-note">Teacher can now scan this QR using the scanner page.</p>
+            <p className="scan-note">
+              Teacher can now scan this QR using the scanner page.
+            </p>
           </div>
         ) : (
           <div className="qr-empty">
-            <img src="/qr-placeholder.png" alt="placeholder" className="placeholder" />
+            <img
+              src="/qr-placeholder.png"
+              alt="placeholder"
+              className="placeholder"
+            />
             <small>QR preview will show here after generation</small>
           </div>
         )}

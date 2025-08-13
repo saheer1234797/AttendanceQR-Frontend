@@ -1,4 +1,4 @@
-/* Navbar Container */
+
 .navbar {
   background: linear-gradient(45deg, #007bff, #00d4ff);
   padding: 0.8rem 0;
@@ -16,7 +16,7 @@
   justify-content: space-between;
 }
 
-/* Logo */
+
 .logo {
   color: white;
   font-size: 1.6rem;
@@ -28,7 +28,7 @@
   color: yellow;
 }
 
-/* Menu Items */
+
 .menu {
   list-style: none;
   display: flex;
@@ -49,7 +49,7 @@
   color: #fff;
 }
 
-/* Hamburger Icon for Mobile */
+
 .menu-icon {
   display: none;
   font-size: 1.8rem;
@@ -57,12 +57,12 @@
   cursor: pointer;
 }
 
-/* Hidden checkbox hack */
+
 #menu-toggle {
   display: none;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .menu {
     position: absolute;
@@ -88,9 +88,9 @@
 }
 
 
-/* add ki hai  */
+
 .user-info {
   font-size: 0.9rem;
-  margin-left: auto; /* agar tum chaaho right align kar sakte ho */
+  margin-left: auto; 
   padding-right: 1rem;
 }

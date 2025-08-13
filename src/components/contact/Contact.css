@@ -1,0 +1,104 @@
+.contact-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 20px;
+  background: #fff;
+  min-height: 500px;
+
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+background-color: #F5F5F5;
+padding: 20px;
+  
+}
+
+.contact-info h2 {
+  color: #333;
+  margin-bottom: 15px;
+  
+}
+
+.contact-info p {
+  margin: 29px 0;
+}
+
+.social-icons {
+  margin-top: 15px;
+
+
+
+}
+
+.social-icons a {
+  font-size: 25px;
+  margin-right: 10px;
+   /* color:  #007bff; */
+     color: linear-gradient(45deg, #007bff, #00d4ff);
+  text-decoration: none;
+  margin-right: 15px;
+  
+}
+
+.contact-form {
+  flex: 1;
+  min-width: 300px;
+background-color: #F5F5F5;
+padding: 20px;
+ 
+}
+
+.contact-form h2 {
+  margin-bottom: 30px;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form input,
+.contact-form textarea {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact-form button {
+  padding: 10px;
+   background: linear-gradient(45deg, #007bff, #00d4ff);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background: #b52b27;
+}
+.massage{
+   height: 100px;
+
+
+    margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.l{
+  font-weight: bold; 
+  color: #000; 
+  margin-bottom: 2px;
+}
+
+
+.icon{
+     font-weight: bold; 
+     color: #d9534f;
+}
+

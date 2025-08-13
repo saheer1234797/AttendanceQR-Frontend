@@ -140,3 +140,12 @@ p {
   padding: 15px 0;
   font-size: 0.9rem;
 }
+
+.feature{
+   background: white;
+  padding: 30px;
+  
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
