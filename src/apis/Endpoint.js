@@ -4,7 +4,14 @@ export default {
  SignIn:BASE_URL+"/user/login",
  Logout:BASE_URL+"/user/logout",
  Teacherdashbpord:BASE_URL+"/admin/alldata",
+
+
+
  AdminAll:BASE_URL+"/admin/all",
+
+// AdminAll:BASE_URL+"/admin/allData",
+
+
   GenerateQR:BASE_URL+"/qr/generateQR",
 
   Profile:BASE_URL+"/user/profile"

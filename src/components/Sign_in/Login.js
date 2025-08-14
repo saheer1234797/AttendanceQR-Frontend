@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { data, Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import EndPoint from '../../apis/Endpoint';
 
@@ -22,6 +22,7 @@ function Login() {
         let response = await axios.post(EndPoint.SignIn, state,{
            withCredentials: true,
         });
+     
         toast.success(response.data.message);
 console.log("Login response:", response);
 
@@ -53,6 +54,7 @@ console.log("Login response:", response);
       }
     } catch (Error) {
       console.log(Error);
+      
       toast.error(Error?.response?.data?.error || "Oops! Something went wrong");
     }
   };

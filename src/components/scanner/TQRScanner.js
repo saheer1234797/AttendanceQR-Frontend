@@ -49,7 +49,7 @@ import "../scanner/TQRScanner.css"
         await stopScanner();
         // Attendance mark hone ke baad student ko dashboard pe le jao
         setTimeout(() => {
-          navigate("/stundetDashboard");
+          navigate("/studentdashboard");
         }, 2000);
       } else {
         toast.error(data.message, { position: "top-right" });
