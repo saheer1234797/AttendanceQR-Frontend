@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
@@ -24,13 +22,13 @@ function Login() {
         });
      
         toast.success(response.data.message);
-console.log("Login response:", response);
+        console.log("Login response:", response);
 
               localStorage.setItem('token', response.data.token);
               console.log("Saved Token:  ", localStorage.getItem("token"));//only chack for token 
-      // localStorage.setItem('user', JSON.stringify(response.data.user));
+      //      localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('user', JSON.stringify(response.data.data));
-      localStorage.setItem("role", response.data.data.role);  // this lin ei add fro the chanck   only 
+        localStorage.setItem("role", response.data.data.role);  // this lin ei add fro the chanck   only 
       
         // navigate("/tdashboard");
          const role = response.data.data.role;

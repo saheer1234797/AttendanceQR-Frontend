@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 
   function Tdashboard() {
   const navigate=useNavigate();
+    const isLoggedIn = !!localStorage.getItem("token");
+  const userRole = localStorage.getItem("role");
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+  const userName = user.name || "";
   const [searchEmail, setSearchEmail] = useState("");
   const [filterMonth, setFilterMonth] = useState("");
   const [filterClass, setFilterClass] = useState("");
@@ -120,7 +123,14 @@ const handleLogout=async()=>{
   return (
     <div className="tdashboard-container">
       <aside className="sidebar">
-        <h2>Teacher Panel</h2>
+         {isLoggedIn && (
+            <div className="user-info" style={{ color: "white", marginRight: "1rem" }}>
+           <h2>{userRole} Panel</h2> 
+            </div>
+          )}  
+
+
+        {/* <h2>Teacher Panel</h2> */}
         <ul>
           <li><Link className="nav-link" to="/Home">Home</Link></li>
          

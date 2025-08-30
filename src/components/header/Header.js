@@ -38,11 +38,11 @@ function Header() {
           </Link>
 
           {/* Display logged-in user info */}
-          {isLoggedIn && (
+          {/* {isLoggedIn && (
             <div className="user-info" style={{ color: "white", marginRight: "1rem" }}>
               Welcome, <strong>{userName}</strong> ({userRole})
             </div>
-          )}  
+          )}   */}
 
           {/* Hamburger Menu */}
           <input type="checkbox" id="menu-toggle" />
@@ -57,16 +57,16 @@ function Header() {
                 <li>
                   <Link to="/login">Login</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/SignUp">Register</Link>
-                </li>
+                </li> */}
               </>
             )}
 
             {isLoggedIn && (
               <>
               {/* add some thing  */}
- {userRole === "student" && (
+            {userRole === "student" && (
                   <li>
                     <Link to="/studentdashboard">Dashboard</Link>
                   </li>
@@ -120,7 +120,7 @@ function Header() {
                       cursor: "pointer",
                     }}
                   >
-                    Logout
+                    Logout  
                   </button>
                 </li>
               </>

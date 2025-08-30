@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Endpoint from "../../apis/Endpoint";
@@ -64,5 +62,9 @@ function Sprofile() {
 }
 
 export default Sprofile;
+
+
+
+
 
 
