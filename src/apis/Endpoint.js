@@ -1,5 +1,5 @@
-export const BASE_URL="http://localhost:3000";
-//  export const BASE_URL="https://attendanceqr-backend.onrender.com";
+// export const BASE_URL="http://localhost:3000";
+ export const BASE_URL="https://attendanceqr-backend.onrender.com";
 export default {
  SignUp: BASE_URL+"/user/register",
  SignIn:BASE_URL+"/user/login",
