@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../genrqteqr/GenrateQr.css";
 import Endpoint from "../../apis/Endpoint";
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
 export default function GenerateQR() {
   const [loading, setLoading] = useState(false);
@@ -37,7 +39,8 @@ export default function GenerateQR() {
     }
   };
 
-  return (
+  return <>
+  <Header/>
     <div className="qr-wrapper">
       <div className="qr-card">
         <h2>Generate QR Code</h2>
@@ -121,6 +124,10 @@ export default function GenerateQR() {
           </div>
         )}
       </div>
+        <Footer/>
     </div>
-  );
+  
+ </>
 }
+
+

@@ -10,6 +10,8 @@ import StudentDashboard from "./components/tdashboard/StudentDashboard.js";
 import Sprofile from "./components/profile/Profile.js";
 import TQRScanner from "./components/scanner/TQRScanner.js";
 import GenerateQR from "./components/genrqteqr/GenrateQr.js";
+import ForgotPassword from "./components/password/ForgotPassword";
+import ResetPassword from "./components/password/ResetPassword.js";
 
 
 import "./App.css";
@@ -29,9 +31,11 @@ function App() {
              <Route path="/Sprofile" element={<Sprofile/>}/>
               <Route path="/TQRScanner" element={<TQRScanner/>}/>
               <Route path="/GenerateQR" element={<GenerateQR/>}/>
+              <Route path="/forgotpassword" element={<ForgotPassword/>} />
+          
+         <Route path="/reset-password/:token" element={<ResetPassword/>} />
 
            
-
           </Routes>
       
     </Router>

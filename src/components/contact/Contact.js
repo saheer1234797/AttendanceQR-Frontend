@@ -46,12 +46,7 @@ import "./Contact.css";
       toast.error("Failed to send message ");
       
     }
-    //   alert(data.message || "Message sent successfully!");
-    //   setFormData({ name: "", email: "", message: "" });
-    // } catch (error) {
-    //   console.error(error);
-    //   alert("Failed to send message.");
-    // }
+    
   };
 
   return <>

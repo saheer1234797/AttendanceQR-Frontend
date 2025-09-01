@@ -3,6 +3,7 @@ import './Login.css';
 import axios from 'axios';
 import { data, Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+
 import EndPoint from '../../apis/Endpoint';
 
 function Login() {
@@ -25,28 +26,22 @@ function Login() {
         console.log("Login response:", response);
 
               localStorage.setItem('token', response.data.token);
-              console.log("Saved Token:  ", localStorage.getItem("token"));//only chack for token 
-      //      localStorage.setItem('user', JSON.stringify(response.data.user));
+              console.log("Saved Token:  ", localStorage.getItem("token")); 
+
         localStorage.setItem('user', JSON.stringify(response.data.data));
-        localStorage.setItem("role", response.data.data.role);  // this lin ei add fro the chanck   only 
+        localStorage.setItem("role", response.data.data.role); 
       
-        // navigate("/tdashboard");
+     
          const role = response.data.data.role;
       if (role === 'student') {
-        navigate('/Home');  // student dashboard route
+        navigate('/Home');  
       } else if (role === 'teacher') {
-        navigate('/Home');  // teacher dashboard route
+        navigate('/Home');  
       } else {
        
         navigate('/Home');  
       }
         
-        
-        
-        
-        
-        
-        // replace with your route
       } else {
         toast.error("Please enter email and password");
       }
@@ -93,7 +88,8 @@ function Login() {
             </div>
 
             <div className="text-end mb-3">
-              <Link to="/forgot-password" className="text-decoration-none small">Forgot Password?</Link>
+            
+              <Link to="/forgotpassword" className="text-decoration-none small">Forgot Password?</Link>
             </div>
 
             <div className="d-grid mt-2">

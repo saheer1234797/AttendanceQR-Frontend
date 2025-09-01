@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Endpoint from "../../apis/Endpoint";
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
+import { data, Link, useNavigate } from 'react-router-dom';
+
 import "./Profile.css";
 
 function Sprofile() {
@@ -32,7 +36,8 @@ function Sprofile() {
     return <div className="no-profile">No profile found. Please login.</div>;
   }
 
-  return (
+  return <>
+  <Header/>
     <div className="student-container">
       <div className="student-card">
         <div className="profile-header">
@@ -54,11 +59,14 @@ function Sprofile() {
             <span className="label">Email:</span>
             <span>{student.email}</span>
           </div>
+       <Link to="/Home">
+          <button className="mt-5 btn btn-primary w-100">Home page</button></Link>
          
         </div>
       </div>
     </div>
-  );
+    <Footer/>
+</>
 }
 
 export default Sprofile;

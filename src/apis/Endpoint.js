@@ -1,5 +1,5 @@
 export const BASE_URL="http://localhost:3000";
-// export const BASE_URL="https://attendanceqr-backend.onrender.com";
+//  export const BASE_URL="https://attendanceqr-backend.onrender.com";
 export default {
  SignUp: BASE_URL+"/user/register",
  SignIn:BASE_URL+"/user/login",
@@ -20,7 +20,11 @@ export default {
 QR:BASE_URL+"/scanQR/scanQR",
 
           StudentAttendance:BASE_URL+"/Attendce/st",
-          SendEmail:BASE_URL+"/email/email"
+          SendEmail:BASE_URL+"/email/email",
 
+          TodayAttendance:BASE_URL+"/admin/today"
+,
 
+ForgotPassword:BASE_URL+"/password/forgot-password",
+ResetPassword:BASE_URL+"/password/reset-password"
 }

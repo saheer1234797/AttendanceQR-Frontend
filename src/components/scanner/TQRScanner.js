@@ -1,11 +1,11 @@
-
-
 import React, { useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Endpoint from "../../apis/Endpoint"; // API URL yahan rakha hai
+import Endpoint from "../../apis/Endpoint"; 
 import { useNavigate } from "react-router-dom";
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
 import "../scanner/TQRScanner.css"
 
 
@@ -47,13 +47,13 @@ import "../scanner/TQRScanner.css"
       if (response.ok) {
         toast.success(data.message, { position: "top-right" });
         await stopScanner();
-        // Attendance mark hone ke baad student ko dashboard pe le jao
+      
         setTimeout(() => {
           navigate("/studentdashboard");
         }, 2000);
       } else {
         toast.error(data.message, { position: "top-right" });
-        // Agar attendance mark nahi hui toh bhi scanner band kar do taaki user dobara try kar sake
+       
         await stopScanner();
       }
     } catch (error) {
@@ -103,7 +103,9 @@ import "../scanner/TQRScanner.css"
       });
   };
 
-  return (
+  return <>
+
+    < Header/>
     <div className="qr-scanner-container">
       <h2> Studnet  QR Scanner</h2>
 
@@ -129,7 +131,8 @@ import "../scanner/TQRScanner.css"
 
       <ToastContainer />
     </div>
-  );
+    <Footer/>
+   </>
 };
 
 export default TQRScanner;

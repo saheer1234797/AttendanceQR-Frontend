@@ -31,8 +31,10 @@ import Endpoint from "../../apis/Endpoint";
       const response = await axios.get(Endpoint.StudentAttendance, {
         withCredentials: true, 
       });
+      console.log("Response Data:", response.data);
 
       if (response.status === 200) {
+              console.log("Response Data:", response.data);
        
         setAttendanceData(response.data.data || []);
       } else {
@@ -111,8 +113,12 @@ import Endpoint from "../../apis/Endpoint";
             </strong>
           </div>
           <div className="card">
-            Current Month: <strong>August</strong>
-          </div>
+           Current Month:{" "}
+         <strong>
+               {new Date().toLocaleString("default", { month: "long" })}{" "}
+                {new Date().getFullYear()}
+                  </strong>
+         </div>
         </div>
 
         <div className="filters">
@@ -123,7 +129,7 @@ import Endpoint from "../../apis/Endpoint";
           </select>
 
           <select onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="">Records</option>
+            <option value="">Status</option>
             <option value="present">Present</option>
             <option value="absent">Absent</option>
           </select>
@@ -141,22 +147,21 @@ import Endpoint from "../../apis/Endpoint";
               <tr>
                 <th>Date</th>
                 <th>Class</th>
+                    <th>Email</th>
                 <th>Status</th>
               </tr>
             </thead>
+           
             <tbody>
-              {filteredData.map((record, index) => (
-                <tr key={index}>
- 
-                  <td>{(record.scannedAt || record.createdAt || "").slice(0, 10)}</td>
-
-             
-                  <td>{"N/A"}</td>
-
-                  <td>{record.status}</td>
-                </tr>
-              ))}
-            </tbody>
+  {filteredData.map((record, index) => (
+    <tr key={index}>
+      <td>{(record.scannedAt || record.createdAt || "").slice(0, 10)}</td>
+      <td>{record.student?.class || "N/A"}</td>
+      <td>{record.student?.email || "N/A"}</td>
+      <td>{record.status}</td>
+    </tr>
+  ))}
+</tbody>
           </table>
         </div>
       </main>

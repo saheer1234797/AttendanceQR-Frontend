@@ -85,6 +85,25 @@ useEffect(() => {
 
 
 
+useEffect(() => {
+  const fetchTodayAttendance = async () => {
+    try {
+      const res = await axios.get(Endpoint.TodayAttendance, { withCredentials: true });
+      setDashboardData(prev => ({
+        ...prev,
+        todayPresent: res.data.presentCount,
+        todayAbsent: res.data.absentCount
+      }));
+    } catch (err) {
+      console.error("Failed to fetch today attendance", err);
+    }
+  };
+  fetchTodayAttendance();
+}, []);
+
+
+
+
 
 
 
@@ -134,11 +153,14 @@ const handleLogout=async()=>{
         <ul>
           <li><Link className="nav-link" to="/Home">Home</Link></li>
          
-         
-          <li>
+         {isLoggedIn &&userRole==="teacher" &&(
+           <li>
 
             <Link className="nav-link" to="/GenerateQR">Genrate_QR</Link>
           </li>
+
+         )}
+         
 
           <li>
 
@@ -151,15 +173,14 @@ const handleLogout=async()=>{
       <main className="dashboard-main">
         <h1 className="mb-3"> Dashboard Overview</h1>
 
+    
         <div className="cards">
+  <div className="card">Total Students: <strong>{desh.totalStudents}</strong></div>
+  <div className="card">Total Teachers: <strong>{desh.totalTeachers}</strong></div>
+  <div className="card">Today Present: <strong>{dashboardData.todayPresent || 0}</strong></div>
+  <div className="card">Today Absent: <strong>{dashboardData.todayAbsent || 0}</strong></div>
+</div>
 
-
-          
-          <div className="card">Total Students: <strong>{desh.totalStudents}</strong></div>
-          <div className="card">Total Teachers: <strong>{desh.totalTeachers}</strong></div>
-          <div className="card">Total Attendance: <strong>{dashboardData.totalAttendace}</strong></div>
-          <div className="card">Today: <strong>{dashboardData.last7days?.[0]?.count || "N/A"}</strong></div>
-        </div>
 
         <div className="filters">
           <input
@@ -183,7 +204,7 @@ const handleLogout=async()=>{
           </select>
 
           <select onChange={(e) => setfilterstatus(e.target.value)}>
-            <option value="">Records</option>
+            <option value="">Status</option>
             <option value="present">Present</option>
             <option value="absent">Absent</option>
           </select>
@@ -229,3 +250,5 @@ const handleLogout=async()=>{
 export default Tdashboard;
 
  
+
+

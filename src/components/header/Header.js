@@ -1,6 +1,4 @@
 
-
-
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +9,7 @@ import "./Header.css";
 
 function Header() {
   const isLoggedIn = !!localStorage.getItem("token");
-  const userRole = localStorage.getItem("role"); // e.g. 'student', 'teacher', 'admin'
+  const userRole = localStorage.getItem("role"); 
   const user = JSON.parse(localStorage.getItem("user")) || {};
   const userName = user.name || "";
   const navigate = useNavigate();
