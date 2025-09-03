@@ -5,6 +5,8 @@ import axios from "axios";
 import Endpoint from "../../apis/Endpoint";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+
 import "./Header.css";
 
 function Header() {
@@ -104,6 +106,9 @@ function Header() {
                     </li>
                     <li>
                       <Link to="/SignUp">Create Account</Link>
+                    </li>
+                     <li>
+                      <Link to="/UploadStudents">Bulk Create Account</Link>
                     </li>
                   </>
                 )}

@@ -1,46 +1,43 @@
+
+
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "./Tdashboard.css";
 import Endpoint from "../../apis/Endpoint";
-import { useNavigate } from "react-router-dom";
 
-
-  function Tdashboard() {
-  const navigate=useNavigate();
-    const isLoggedIn = !!localStorage.getItem("token");
+function Tdashboard() {
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
-    const user = JSON.parse(localStorage.getItem("user")) || {};
+  const user = JSON.parse(localStorage.getItem("user")) || {};
   const userName = user.name || "";
+
   const [searchEmail, setSearchEmail] = useState("");
-  const [filterMonth, setFilterMonth] = useState("");
   const [filterClass, setFilterClass] = useState("");
   const [filterstatus, setfilterstatus] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date()); // default today
 
   const [dashboardData, setDashboardData] = useState({
-    totalStudents: "Loading...",
     totalTeachers: "Loading...",
-    totalAttendace: "Loading...",
     last7days: [],
-    recentAttendance: [],
+    allAttendance: [],
   });
 
-
-const[desh,setdesh]=useState({
-   totalStudents: "Loading...",
+  //  Admin Stats
+  const [desh, setdesh] = useState({
+    totalStudents: "Loading...",
     totalTeachers: "Loading...",
-})
-
-
+  });
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await axios.get(Endpoint.AdminAll,desh);
-
+        const res = await axios.get(Endpoint.AdminAll, desh);
         setdesh(res.data.data);
-            console.log("Dashboard API Response:", res.data);
       } catch (err) {
         console.error("Dashboard fetch failed", err);
       }
@@ -48,140 +45,146 @@ const[desh,setdesh]=useState({
     fetchDashboardData();
   }, []);
 
+  //  Teacher Dashboard Data
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get(Endpoint.Teacherdashbpord, {
+          withCredentials: true,
+        });
 
+        const attendanceData = res.data.data || [];
 
-
-
-
-
-useEffect(() => {
-  const fetchStudents = async () => {
-    try {
-      const res = await axios.get(Endpoint.Teacherdashbpord,dashboardData, {
-        withCredentials: true,
-      });
-  
-    console.log("Dashboard API Response:", res.data);
-    
-     
-     
-
-      setDashboardData((prev) => ({
-      ...prev,
-       recentAttendance: res.data.data,
-        
-
-
-
-
-      }));
-   
-    } catch (err) {
-      console.error("Failed to fetch students", err);
-    }
-  };
-  fetchStudents();
-}, []);
-
-
-
-useEffect(() => {
-  const fetchTodayAttendance = async () => {
-    try {
-      const res = await axios.get(Endpoint.TodayAttendance, { withCredentials: true });
-      setDashboardData(prev => ({
-        ...prev,
-        todayPresent: res.data.presentCount,
-        todayAbsent: res.data.absentCount
-      }));
-    } catch (err) {
-      console.error("Failed to fetch today attendance", err);
-    }
-  };
-  fetchTodayAttendance();
-}, []);
-
-
-
-
-
-
-
-
-const handleLogout=async()=>{
-  
-      
-        try{
-            await axios.post(Endpoint.Logout,{},{withCredentials:true});
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            toast.success('Logout sueccesful');
-            navigate('/Home');
-
-        }catch(error){
-            console.log(error);
-            toast.error("Faild to logout");
-            
-
-        }
+        setDashboardData((prev) => ({
+          ...prev,
+          allAttendance: attendanceData, // save all
+        }));
+      } catch (err) {
+        console.error("Failed to fetch students", err);
+      }
     };
+    fetchStudents();
+  }, []);
 
+  // 
+  const handleLogout = async () => {
+    try {
+      await axios.post(Endpoint.Logout, {}, { withCredentials: true });
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      toast.success("Logout successful");
+      navigate("/Home");
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  };
 
+  //  Filter Attendance Data
+  const filteredData =
+    dashboardData.allAttendance?.filter((record) => {
+      if (!record.date) return false;
 
+      // record.date is like "2/9/2025" → normalize to YYYY-MM-DD
+      const [day, month, year] = record.date.split("/");
+      const dayPadded = day.padStart(2, "0");
+      const monthPadded = month.padStart(2, "0");
+      const recordDateStr = `${year}-${monthPadded}-${dayPadded}`; //  2025-09-02
 
+      if (selectedDate) {
+        const selectedDateStr = selectedDate.toLocaleDateString("en-CA"); //  2025-09-03
+        if (recordDateStr !== selectedDateStr) return false;
+      }
 
-  const filteredData = dashboardData.recentAttendance?.filter((record) => {
-    return (
-      (!searchEmail || record.email?.includes(searchEmail)) &&
-      (!filterClass || record.class === filterClass) &&
-      (!filterMonth || record.date?.startsWith(filterMonth)) &&
-      (!filterstatus || record.record === filterstatus)
-    );
-  }) || [];
+      return (
+        (!searchEmail || record.email?.includes(searchEmail)) &&
+        (!filterClass || record.class === filterClass) &&
+        (!filterstatus || record.record === filterstatus)
+      );
+    }) || [];
+
+  //  Total Students Count (depends on filterClass)
+  const totalStudentsCount = React.useMemo(() => {
+    if (!dashboardData.allAttendance) return 0;
+
+    if (filterClass) {
+      const uniqueByEmail = new Set(
+        dashboardData.allAttendance
+          .filter((r) => r.class === filterClass)
+          .map((r) => r.email)
+      );
+      return uniqueByEmail.size;
+    }
+
+    const uniqueByEmail = new Set(dashboardData.allAttendance.map((r) => r.email));
+    return uniqueByEmail.size;
+  }, [dashboardData.allAttendance, filterClass]);
+
+  //  Count for selected date
+  const presentCount = filteredData.filter((r) => r.record === "present").length;
+  const absentCount = filteredData.filter((r) => r.record === "absent").length;
 
   return (
     <div className="tdashboard-container">
       <aside className="sidebar">
-         {isLoggedIn && (
-            <div className="user-info" style={{ color: "white", marginRight: "1rem" }}>
-           <h2>{userRole} Panel</h2> 
-            </div>
-          )}  
+        {isLoggedIn && (
+          <div
+            className="user-info"
+            style={{ color: "white", marginRight: "1rem" }}
+          >
+            <h2>{userRole} Panel</h2>
+          </div>
+        )}
 
-
-        {/* <h2>Teacher Panel</h2> */}
         <ul>
-          <li><Link className="nav-link" to="/Home">Home</Link></li>
-         
-         {isLoggedIn &&userRole==="teacher" &&(
-           <li>
-
-            <Link className="nav-link" to="/GenerateQR">Genrate_QR</Link>
-          </li>
-
-         )}
-         
-
           <li>
-
-            <Link className="nav-link" to="/Sprofile">Profile</Link>
+            <Link className="nav-link" to="/Home">
+              Home
+            </Link>
+          </li>
+          {isLoggedIn && userRole === "teacher" && (
+            <li>
+              <Link className="nav-link" to="/GenerateQR">
+                Generate QR
+              </Link>
+            </li>
+          )}
+          <li>
+            <Link className="nav-link" to="/Sprofile">
+              Profile
+            </Link>
           </li>
           <li onClick={handleLogout}>Logout</li>
         </ul>
       </aside>
 
       <main className="dashboard-main">
-        <h1 className="mb-3"> Dashboard Overview</h1>
+        <h1 className="mb-3">Dashboard Overview</h1>
 
-    
+        {/*  Cards */}
         <div className="cards">
-  <div className="card">Total Students: <strong>{desh.totalStudents}</strong></div>
-  <div className="card">Total Teachers: <strong>{desh.totalTeachers}</strong></div>
-  <div className="card">Today Present: <strong>{dashboardData.todayPresent || 0}</strong></div>
-  <div className="card">Today Absent: <strong>{dashboardData.todayAbsent || 0}</strong></div>
-</div>
+          <div className="card">
+            Total Students <strong>{totalStudentsCount}</strong>
+          </div>
+          <div className="card">
+            Total Teachers <strong>{desh.totalTeachers}</strong>
+          </div>
+          <div className="card">
+            Present{" "}
+            {selectedDate
+              ? `on ${selectedDate.toISOString().slice(0, 10)}`
+              : ""}{" "}
+            <strong>{presentCount}</strong>
+          </div>
+          <div className="card">
+            Absent{" "}
+            {selectedDate
+              ? `on ${selectedDate.toISOString().slice(0, 10)}`
+              : ""}{" "}
+            <strong>{absentCount}</strong>
+          </div>
+        </div>
 
-
+        {/*  Filters */}
         <div className="filters">
           <input
             type="text"
@@ -190,18 +193,20 @@ const handleLogout=async()=>{
             onChange={(e) => setSearchEmail(e.target.value)}
           />
 
-          <select onChange={(e) => setFilterClass(e.target.value)}>
+          <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
             <option value="">All Classes</option>
             <option value="13th">Batch-13th</option>
             <option value="14th">Batch-14th</option>
             <option value="12th">Batch-12th</option>
           </select>
 
-          <select onChange={(e) => setFilterMonth(e.target.value)}>
-            <option value="">All Months</option>
-            <option value="2025-08">August 2025</option>
-            <option value="2025-07">July 2025</option>
-          </select>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select Date"
+            isClearable
+          />
 
           <select onChange={(e) => setfilterstatus(e.target.value)}>
             <option value="">Status</option>
@@ -212,6 +217,7 @@ const handleLogout=async()=>{
           <button className="scan-btn"> Scan QR</button>
         </div>
 
+        {/*  Attendance Table */}
         <div className="table-wrapper">
           <table className="attendance-table">
             <thead>
@@ -231,12 +237,22 @@ const handleLogout=async()=>{
                     <td>{record.email || "N/A"}</td>
                     <td>{record.date || "N/A"}</td>
                     <td>{record.class || "N/A"}</td>
-                    <td>{record.record || "N/A"}</td>
+  <td>    
+<span
+    className={`px-3 py-2 rounded text-white badge ${record.record === "present" ? "bg-success" : "bg-danger"}`}
+  >
+    {record.record || "N/A"}
+  </span>
+  </td>   
+  
+
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>No records found</td>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No records found
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -245,10 +261,7 @@ const handleLogout=async()=>{
       </main>
     </div>
   );
-};
+}
 
 export default Tdashboard;
-
- 
-
 

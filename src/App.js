@@ -12,6 +12,7 @@ import TQRScanner from "./components/scanner/TQRScanner.js";
 import GenerateQR from "./components/genrqteqr/GenrateQr.js";
 import ForgotPassword from "./components/password/ForgotPassword";
 import ResetPassword from "./components/password/ResetPassword.js";
+import UploadStudents from "./components/bulk/UploadStudents.js";
 
 
 import "./App.css";
@@ -34,6 +35,7 @@ function App() {
               <Route path="/forgotpassword" element={<ForgotPassword/>} />
           
          <Route path="/reset-password/:token" element={<ResetPassword/>} />
+         <Route path="/UploadStudents" element={<UploadStudents />} />
 
            
           </Routes>

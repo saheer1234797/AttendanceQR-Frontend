@@ -86,7 +86,9 @@ function SignUp() {
             <div className="signup-card">
               <form onSubmit={handleSubmit}>
                 <div className="form-group pt-3">
-                  <label>Full Name</label>
+                 
+            <label className="form-label">Full Name<span style={{color:"red"}}>*</span>
+          </label>
                   <input
                     value={state.name}
                     onChange={(e) => setState({ ...state, name: e.target.value })}
@@ -97,7 +99,9 @@ function SignUp() {
                 </div>
 
                 <div className="form-group">
-                  <label>Email</label>
+                 
+                  <label className="form-label">Email<span style={{color:"red"}}>*</span>
+          </label>
                   <input
                     value={state.email}
                     onChange={(e) => setState({ ...state, email: e.target.value })}
@@ -117,12 +121,15 @@ function SignUp() {
                     <option value="">Select your role</option>
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
-                    <option value="admin">Admin</option>
+              
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label>Password</label>
+             
+                       <label className="form-label">Password<span style={{color:"red"}}>*</span>
+          </label>
+                
                   <input
                     value={state.password}
                     onChange={(e) => setState({ ...state, password: e.target.value })}

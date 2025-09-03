@@ -129,3 +129,10 @@ body {
   top: 0;
   z-index: 1;
 }
+
+
+
+
+.highlight-today {
+  background-color: #d1ffd6; /* light green for today */
+}

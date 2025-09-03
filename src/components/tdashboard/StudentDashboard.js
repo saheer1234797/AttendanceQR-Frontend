@@ -1,22 +1,23 @@
 
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Tdashboard.css";
+import "./Tdashboard.css"; 
 import axios from "axios";
 import { toast } from "react-toastify";
 import Endpoint from "../../apis/Endpoint";
 
-
-  function  StudentDashboard(){
+function StudentDashboard() {
   const navigate = useNavigate();
 
-  const [filterMonth, setFilterMonth] = useState("");
+  const [filterMonth, setFilterMonth] = useState(
+    new Date().toISOString().slice(0, 7) // default: current month (exmple kai liye "2025-09")
+  );
   const [filterStatus, setFilterStatus] = useState("");
   const [userName, setUserName] = useState("Student");
   const [attendanceData, setAttendanceData] = useState([]);
 
   useEffect(() => {
-    
     const userData = localStorage.getItem("user");
     if (userData) {
       const userObj = JSON.parse(userData);
@@ -29,13 +30,10 @@ import Endpoint from "../../apis/Endpoint";
   const fetchAttendance = async () => {
     try {
       const response = await axios.get(Endpoint.StudentAttendance, {
-        withCredentials: true, 
+        withCredentials: true,
       });
-      console.log("Response Data:", response.data);
 
       if (response.status === 200) {
-              console.log("Response Data:", response.data);
-       
         setAttendanceData(response.data.data || []);
       } else {
         toast.error("Failed to fetch attendance data");
@@ -59,17 +57,19 @@ import Endpoint from "../../apis/Endpoint";
     }
   };
 
-
+  //  Filter Logic
   const filteredData = attendanceData.filter((record) => {
-    const date = record.scannedAt || record.createdAt || "";
+    const date = (record.scannedAt || record.createdAt || "").slice(0, 10); // "YYYY-MM-DD"
+    const month = date.slice(0, 7); // "YYYY-MM"
     return (
-      (!filterMonth || date.startsWith(filterMonth)) &&
+      (!filterMonth || month === filterMonth) &&
       (!filterStatus || record.status === filterStatus)
     );
   });
 
   return (
     <div className="tdashboard-container">
+      {/* Sidebar */}
       <aside className="sidebar">
         <h2>Student Panel</h2>
         <ul>
@@ -83,7 +83,6 @@ import Endpoint from "../../apis/Endpoint";
               Profile
             </Link>
           </li>
-         
           <li>
             <Link className="nav-link" to="/TQRScanner">
               Scan QR
@@ -93,9 +92,11 @@ import Endpoint from "../../apis/Endpoint";
         </ul>
       </aside>
 
+      {/* Main */}
       <main className="dashboard-main">
-        <h1 className="mb-3"> Welcome {userName}</h1>
+        <h1 className="mb-3">Welcome {userName}</h1>
 
+        {/* Cards */}
         <div className="cards">
           <div className="card">
             Total Attendance: <strong>{attendanceData.length}</strong>
@@ -113,63 +114,101 @@ import Endpoint from "../../apis/Endpoint";
             </strong>
           </div>
           <div className="card">
-           Current Month:{" "}
-         <strong>
-               {new Date().toLocaleString("default", { month: "long" })}{" "}
-                {new Date().getFullYear()}
-                  </strong>
-         </div>
+            Current Month:{" "}
+            <strong>
+              {new Date().toLocaleString("default", { month: "long" })}{" "}
+              {new Date().getFullYear()}
+            </strong>
+          </div>
         </div>
 
+        {/* Filters */}
         <div className="filters">
-          <select onChange={(e) => setFilterMonth(e.target.value)}>
+          <select
+            className="form-select"
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+          >
             <option value="">All Months</option>
-            <option value="2025-08">August 2025</option>
-            <option value="2025-07">July 2025</option>
+            {/* generate months dynamically */}
+            {Array.from({ length: 6 }).map((_, i) => {
+              const d = new Date();
+              d.setMonth(d.getMonth() - i);
+              const val = d.toISOString().slice(0, 7);
+              const label =
+                d.toLocaleString("default", { month: "long" }) +
+                " " +
+                d.getFullYear();
+              return (
+                <option key={val} value={val}>
+                  {label}
+                </option>
+              );
+            })}
           </select>
 
-          <select onChange={(e) => setFilterStatus(e.target.value)}>
+          <select
+            className="form-select"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
             <option value="">Status</option>
             <option value="present">Present</option>
             <option value="absent">Absent</option>
           </select>
 
-         
-           <Link className="nav-link" to="/TQRScanner">
-           
-                  <button className="scan-btn" >  Scan QR</button>
-            </Link>
+          <Link className="nav-link" to="/TQRScanner">
+            <button className="scan-btn">Scan QR</button>
+          </Link>
         </div>
 
+        {/* Attendance Table */}
         <div className="table-wrapper">
           <table className="attendance-table">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Class</th>
-                    <th>Email</th>
+                <th>Email</th>
                 <th>Status</th>
               </tr>
             </thead>
-           
+
             <tbody>
-  {filteredData.map((record, index) => (
-    <tr key={index}>
-      <td>{(record.scannedAt || record.createdAt || "").slice(0, 10)}</td>
-      <td>{record.student?.class || "N/A"}</td>
-      <td>{record.student?.email || "N/A"}</td>
-      <td>{record.status}</td>
-    </tr>
-  ))}
-</tbody>
+              {filteredData.length > 0 ? (
+                filteredData.map((record, index) => (
+                  <tr key={index}>
+                    <td>
+                      {(record.scannedAt || record.createdAt || "").slice(0, 10)}
+                    </td>
+                    <td>{record.student?.class || "N/A"}</td>
+                    <td>{record.student?.email || "N/A"}</td>
+                    <td>
+                      <span
+                        className={`badge px-3 py-2 ${
+                          record.status === "present"
+                            ? "bg-success"
+                            : "bg-danger"
+                        }`}
+                      >
+                        {record.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
       </main>
     </div>
   );
-};
+}
 
 export default StudentDashboard;
-
-
-
