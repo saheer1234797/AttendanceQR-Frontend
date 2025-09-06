@@ -1294,6 +1294,434 @@
 
 
 
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { Link, useNavigate } from "react-router-dom";
+// import { Pie, Bar, Line } from "react-chartjs-2";
+// import {
+//   Chart as ChartJS,
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   PointElement,
+//   LineElement,
+// } from "chart.js";
+// import Endpoint from "../../apis/Endpoint";
+// import "./DashboardCharts.css";
+// import Header from "../header/Header";
+// import api from "../../apis/api";
+
+
+// ChartJS.register(
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   PointElement,
+//   LineElement
+// );
+
+// function DashboardCharts() {
+//   const navigate = useNavigate();
+//   const isLoggedIn = !!localStorage.getItem("token");
+//   const userRole = localStorage.getItem("role");
+//   const user = JSON.parse(localStorage.getItem("user")) || {};
+
+//   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
+//   const [batch, setBatch] = useState("");
+//   const [email, setEmail] = useState("");
+
+//   const [allData, setAllData] = useState([]);
+//   const [filteredData, setFilteredData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const [studentPie, setStudentPie] = useState({ present: 0, absent: 0 });
+//   const [batchBar, setBatchBar] = useState([]);
+//   const [monthLine, setMonthLine] = useState([]);
+//   const [batchPercent, setBatchPercent] = useState({});
+
+//   const parseDate = (dateStr) => {
+//     if (!dateStr) return null;
+//     const parts = dateStr.split("/");
+//     if (parts.length !== 3) return null;
+//     const [day, month, year] = parts;
+//     return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+//   };
+
+// // ✅ Universal Date Parser
+// // const parseDate = (dateStr) => {
+// //   if (!dateStr) return null;
+
+// //   // अगर पहले से ISO format है (yyyy-mm-dd)
+// //   if (dateStr.includes("-")) {
+// //     return new Date(dateStr);
+// //   }
+
+// //   const parts = dateStr.split("/");
+// //   if (parts.length !== 3) return null;
+
+// //   let day, month, year;
+
+// //   // Localhost (dd/mm/yyyy) → पहला part day
+// //   // Render (mm/dd/yyyy) → पहला part month
+// //   if (Number(parts[0]) > 12) {
+// //     // Localhost case (22/7/2025 → 22 is day)
+// //     [day, month, year] = parts;
+// //   } else {
+// //     // Render case (7/22/2025 → 7 is month)
+// //     [month, day, year] = parts;
+// //   }
+
+// //   return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+// // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   useEffect(() => {
+//     const fetchAttendance = async () => {
+//       try {
+//         setLoading(true);
+//         const res = await api.get(Endpoint.Teacherdashbpord);
+//         setAllData(res.data.data || []);
+      
+//         setLoading(false);
+//       } catch (err) {
+//         console.error("Error fetching attendance", err);
+//         setLoading(false);
+//       }
+//     };
+//     fetchAttendance();
+//   }, []);
+
+//   useEffect(() => {
+//     if (!allData.length) return;
+//         console.log("KHAP Debug Sample Record 👉", allData[0]);
+
+//     const data = allData.filter((r) => {
+//       const d = parseDate(r.date);
+//       if (!d) return false;
+//         console.log("localhost Data Sample:", allData[0]);
+
+//       if (month) {
+//         const recordMonth = `${d.getFullYear()}-${(d.getMonth() + 1)
+//           .toString()
+//           .padStart(2, "0")}`;
+//         if (recordMonth !== month) return false;
+//       }
+
+//       if (batch && r.class !== batch) return false;
+//       if (email && !r.email.toLowerCase().includes(email.toLowerCase()))
+//         return false;
+
+//       return true;
+//     });
+
+//     setFilteredData(data);
+
+//     // Student Pie Chart
+//     const presentCount = data.filter((r) => r.record === "present").length;
+//     const absentCount = data.filter((r) => r.record === "absent").length;
+//     setStudentPie({ present: presentCount, absent: absentCount });
+
+//     // Batch Bar Chart
+//     const batchMap = {};
+//     data.forEach((r) => {
+//       if (!r.class) return;
+//       if (!batchMap[r.class]) batchMap[r.class] = 0;
+//       if (r.record === "present") batchMap[r.class] += 1;
+//     });
+//     setBatchBar(
+//       Object.keys(batchMap).map((b) => ({ name: b, presentDays: batchMap[b] }))
+//     );
+
+//     // Month Line Chart
+//     const dayMap = {};
+//     data.forEach((r) => {
+//       const d = parseDate(r.date);
+//       if (!d) return;
+//       const day = d.getDate();
+//       if (!dayMap[day]) dayMap[day] = 0;
+//       if (r.record === "present") dayMap[day] += 1;
+//     });
+//     setMonthLine(
+//       Object.keys(dayMap)
+//         .sort((a, b) => a - b)
+//         .map((d) => ({ date: d, present: dayMap[d] }))
+//     );
+
+//     // Batch-wise % Calculation
+//     const batchCountMap = {};
+//     data.forEach((r) => {
+//       if (!r.class) return;
+//       if (!batchCountMap[r.class])
+//         batchCountMap[r.class] = { total: 0, present: 0 };
+//       batchCountMap[r.class].total += 1;
+//       if (r.record === "present") batchCountMap[r.class].present += 1;
+//     });
+//     const percentMap = {};
+//     Object.keys(batchCountMap).forEach((b) => {
+//       const { total, present } = batchCountMap[b];
+//       percentMap[b] = total ? Math.round((present / total) * 100) : 0;
+//     });
+//     setBatchPercent(percentMap);
+//   }, [month, batch, email, allData]);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("user");
+//     navigate("/Home");
+//   };
+
+//   if (!isLoggedIn) return <p>Please login first.</p>;
+//   if (loading) return <p>Loading attendance data...</p>;
+
+//   return (
+//     <>
+//       <Header />
+
+//       <div className="analysis-dashboard">
+//         <main className="main">
+//           {/* Filters */}
+//           <div className="fitlter">
+//             <div>
+//               <label>Month:</label>
+//               <input
+//                 type="month"
+//                 value={month}
+//                 onChange={(e) => setMonth(e.target.value)}
+//               />
+//             </div>
+//             <div>
+//               <label>Batch:</label>
+//               <select value={batch} onChange={(e) => setBatch(e.target.value)}>
+//                 <option value="">All Batches</option>
+//                 <option value="12th">Batch-12th</option>
+//                 <option value="13th">Batch-13th</option>
+//                 <option value="14th">Batch-14th</option>
+//               </select>
+//             </div>
+//             <div>
+//               <label>Email:</label>
+//               <input
+//                 type="text"
+//                 placeholder="Search by email"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//               />
+//             </div>
+//           </div>
+
+//           {/* Charts */}
+//           <div className="charts-grid">
+//             <div className="chart-box">
+//               <h3>Student Attendance</h3>
+//               <Pie
+//                 data={{
+//                   labels: ["Present", "Absent"],
+//                   datasets: [
+//                     {
+//                       data: [studentPie.present, studentPie.absent],
+//                       backgroundColor: ["#4caf50", "#f44336"],
+//                     },
+//                   ],
+//                 }}
+//                 options={{ plugins: { legend: { position: "bottom" } } }}
+//               />
+//             </div>
+
+//             <div className="chart-box">
+//               <h3>Batch-wise Attendance %</h3>
+//               <div className="batch-pie-wrapper">
+//                 <Pie
+//                   data={{
+//                     labels: Object.keys(batchPercent),
+//                     datasets: [
+//                       {
+//                         data: Object.values(batchPercent),
+//                         backgroundColor: [
+//                           "#4caf50",
+//                           "#2196f3",
+//                           "#ff9800",
+//                           "#9c27b0",
+//                         ],
+//                       },
+//                     ],
+//                   }}
+//                   options={{
+//                     responsive: true,
+//                     maintainAspectRatio: false,
+//                     plugins: {
+//                       legend: {
+//                         position: "bottom",
+//                         labels: {
+//                           font: { size: 14 },
+//                           generateLabels: (chart) => {
+//                             const data = chart.data;
+//                             return data.labels.map((label, i) => {
+//                               const value = data.datasets[0].data[i];
+//                               return {
+//                                 text: `${label} - ${value}%`,
+//                                 fillStyle:
+//                                   data.datasets[0].backgroundColor[i],
+//                                 hidden: false,
+//                                 index: i,
+//                               };
+//                             });
+//                           },
+//                         },
+//                       },
+//                       tooltip: {
+//                         callbacks: {
+//                           label: function (context) {
+//                             return `${context.label}: ${context.parsed}%`;
+//                           },
+//                         },
+//                       },
+//                     },
+//                   }}
+//                 />
+//               </div>
+//             </div>
+
+//             <div className="chart-box">
+//               <h3>Batch Attendance</h3>
+//               <Bar
+//                 data={{
+//                   labels: batchBar.map((b) => b.name),
+//                   datasets: [
+//                     {
+//                       label: "Present Days",
+//                       data: batchBar.map((b) => b.presentDays),
+//                       backgroundColor: "#2196f3",
+//                     },
+//                   ],
+//                 }}
+//                 options={{
+//                   responsive: true,
+//                   plugins: { legend: { display: false } },
+//                 }}
+//               />
+//             </div>
+
+//             <div className="chart-box">
+//               <h3>Month-wise Trend</h3>
+//               <Line
+//                 data={{
+//                   labels: monthLine.map((t) => t.date),
+//                   datasets: [
+//                     {
+//                       label: "Present Students",
+//                       data: monthLine.map((t) => t.present),
+//                       fill: false,
+//                       borderColor: "#4caf50",
+//                       tension: 0.1,
+//                     },
+//                   ],
+//                 }}
+//                 options={{
+//                   responsive: true,
+//                   plugins: { legend: { position: "bottom" } },
+//                 }}
+//               />
+//             </div>
+//           </div>
+
+//           {/* Attendance Table */}
+//           <div className="tablewrp">
+//             <table className="attendacetable">
+//               <thead>
+//                 <tr>
+//                   <th>Name</th>
+//                   <th>Email</th>
+//                   <th>Date</th>
+//                   <th>Class</th>
+//                   <th>Status</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {filteredData.length > 0 ? (
+//                   filteredData.map((record, index) => (
+//                     <tr key={index}>
+//                       <td>{record.name || "N/A"}</td>
+//                       <td>{record.email || "N/A"}</td>
+//                       <td>{record.date || "N/A"}</td>
+//                       <td>{record.class || "N/A"}</td>
+//                       <td>
+//                         <span
+//                           className={`badge ${
+//                             record.record === "present"
+//                               ? "present"
+//                               : "absent"
+//                           }`}
+//                         >
+//                           {record.record || "N/A"}
+//                         </span>
+//                       </td>
+//                     </tr>
+//                   ))
+//                 ) : (
+//                   <tr>
+//                     <td colSpan="5" style={{ textAlign: "center" }}>
+//                       No records found
+//                     </td>
+//                   </tr>
+//                 )}
+//               </tbody>
+//             </table>
+//           </div>
+//         </main>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default DashboardCharts;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ✅ Fixed DashboardCharts.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -1313,7 +1741,6 @@ import Endpoint from "../../apis/Endpoint";
 import "./DashboardCharts.css";
 import Header from "../header/Header";
 import api from "../../apis/api";
-
 
 ChartJS.register(
   ArcElement,
@@ -1345,11 +1772,31 @@ function DashboardCharts() {
   const [monthLine, setMonthLine] = useState([]);
   const [batchPercent, setBatchPercent] = useState({});
 
+  // ✅ Universal Date Parser (Localhost + Render both work)
   const parseDate = (dateStr) => {
     if (!dateStr) return null;
+
+    // अगर पहले से ISO format है (yyyy-mm-dd)
+    if (dateStr.includes("-")) {
+      return new Date(dateStr);
+    }
+
     const parts = dateStr.split("/");
     if (parts.length !== 3) return null;
-    const [day, month, year] = parts;
+
+    let day, month, year;
+
+    // Localhost (22/7/2025 → dd/mm/yyyy)
+    // Render (7/22/2025 → mm/dd/yyyy)
+    if (Number(parts[0]) > 12) {
+      [day, month, year] = parts; // dd/mm/yyyy
+    } else if (Number(parts[1]) > 12) {
+      [month, day, year] = parts; // mm/dd/yyyy
+    } else {
+      // fallback: मान लो पहला part day है
+      [day, month, year] = parts;
+    }
+
     return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
   };
 
@@ -1359,7 +1806,6 @@ function DashboardCharts() {
         setLoading(true);
         const res = await api.get(Endpoint.Teacherdashbpord);
         setAllData(res.data.data || []);
-      
         setLoading(false);
       } catch (err) {
         console.error("Error fetching attendance", err);
@@ -1371,12 +1817,12 @@ function DashboardCharts() {
 
   useEffect(() => {
     if (!allData.length) return;
-        console.log("KHAP Debug Sample Record 👉", allData[0]);
+
+    console.log("KHAP Debug Sample Record 👉", allData[0]);
 
     const data = allData.filter((r) => {
       const d = parseDate(r.date);
       if (!d) return false;
-        console.log("localhost Data Sample:", allData[0]);
 
       if (month) {
         const recordMonth = `${d.getFullYear()}-${(d.getMonth() + 1)
@@ -1454,7 +1900,6 @@ function DashboardCharts() {
   return (
     <>
       <Header />
-
       <div className="analysis-dashboard">
         <main className="main">
           {/* Filters */}
@@ -1537,8 +1982,7 @@ function DashboardCharts() {
                               const value = data.datasets[0].data[i];
                               return {
                                 text: `${label} - ${value}%`,
-                                fillStyle:
-                                  data.datasets[0].backgroundColor[i],
+                                fillStyle: data.datasets[0].backgroundColor[i],
                                 hidden: false,
                                 index: i,
                               };
