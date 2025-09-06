@@ -167,11 +167,7 @@ function Tdashboard() {
         Generate QR
       </Link>
     </li>
-    <li>
-      <Link className="nav-link" to="/dashboardCharts" activeClassName="active">
-        Attendance Analysis
-      </Link>
-    </li>
+  
   </>
           )}
           <li>
@@ -179,6 +175,13 @@ function Tdashboard() {
               Profile
             </Link>
           </li>
+  <li>
+      <Link className="nav-link" to="/dashboardCharts" activeClassName="active">
+        Attendance Analysis
+      </Link>
+    </li>
+
+
           <li onClick={handleLogout}>Logout</li>
       
         </ul>

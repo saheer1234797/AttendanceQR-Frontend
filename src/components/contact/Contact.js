@@ -80,7 +80,7 @@ import "./Contact.css";
       <div className="contact-form">
         <h2>Send us a Message</h2>
         <form onSubmit={handleSubmit}>
-            <lable className="l">Your Name </lable>
+            <label className="l">Your Name </label>
           <input
             type="text"
             name="name"
@@ -89,7 +89,7 @@ import "./Contact.css";
             onChange={handleChange}
             required
           />
-           <lable className="l" >Your Email</lable>
+           <label className="l" >Your Email</label>
           <input
             type="email"
             name="email"
@@ -98,7 +98,7 @@ import "./Contact.css";
             onChange={handleChange}
             required
           />
-          <lable className="l" >Your Message</lable>
+          <label className="l" >Your Message</label>
           <textarea className="massage"
             name="message"
            

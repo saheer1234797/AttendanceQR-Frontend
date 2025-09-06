@@ -1,6 +1,9 @@
-export const BASE_URL="http://localhost:3000";
-//  export const BASE_URL="https://attendanceqr-backend.onrender.com";
+// export const BASE_URL="http://localhost:3000";
+//   export const BASE_URL="https://attendanceqr-backend.onrender.com";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+  console.log("BASE_URL =>", process.env.REACT_APP_BASE_URL);
 export default {
+
  SignUp: BASE_URL+"/user/register",
  SignIn:BASE_URL+"/user/login",
  Logout:BASE_URL+"/user/logout",
