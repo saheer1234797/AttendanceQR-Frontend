@@ -1,141 +1,311 @@
-// import React, { useRef, useState } from "react";
-// import { Html5Qrcode } from "html5-qrcode";
-// import { toast, ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import Endpoint from "../../apis/Endpoint"; 
-// import { useNavigate } from "react-router-dom";
-// import Header from "../header/Header";
-// import Footer from "../footer/Footer";
-// import "../scanner/TQRScanner.css"
+// // import React, { useRef, useState } from "react";
+// // import { Html5Qrcode } from "html5-qrcode";
+// // import { toast, ToastContainer } from "react-toastify";
+// // import "react-toastify/dist/ReactToastify.css";
+// // import Endpoint from "../../apis/Endpoint"; 
+// // import { useNavigate } from "react-router-dom";
+// // import Header from "../header/Header";
+// // import Footer from "../footer/Footer";
+// // import "../scanner/TQRScanner.css"
 
 
-//   function TQRScanner(){
-//   const qrCodeRegionId = "qr-reader";
-//   const scannerRef = useRef(null);
-//   const [scanning, setScanning] = useState(false);
-//   const [loadingCamera, setLoadingCamera] = useState(false);
-//   const navigate = useNavigate();
+// //   function TQRScanner(){
+// //   const qrCodeRegionId = "qr-reader";
+// //   const scannerRef = useRef(null);
+// //   const [scanning, setScanning] = useState(false);
+// //   const [loadingCamera, setLoadingCamera] = useState(false);
+// //   const navigate = useNavigate();
 
-//   const stopScanner = async () => {
-//     if (scannerRef.current && scanning) {
-//       try {
-//         await scannerRef.current.stop();
-//         scannerRef.current.clear();
-//         setScanning(false);
-//         toast.info(" Scanner Stopped", { position: "top-right" });
-//       } catch (err) {
-//         console.error("Stop failed", err);
-//         toast.error("Failed to stop scanner", { position: "top-right" });
-//       }
-//     }
-//   };
+// //   const stopScanner = async () => {
+// //     if (scannerRef.current && scanning) {
+// //       try {
+// //         await scannerRef.current.stop();
+// //         scannerRef.current.clear();
+// //         setScanning(false);
+// //         toast.info(" Scanner Stopped", { position: "top-right" });
+// //       } catch (err) {
+// //         console.error("Stop failed", err);
+// //         toast.error("Failed to stop scanner", { position: "top-right" });
+// //       }
+// //     }
+// //   };
 
-//   const handleScanSuccess = async (decodedText) => {
-//     try {
-//       const qrData = JSON.parse(decodedText);
-//       const filename = qrData.qrId + ".png";
+// //   const handleScanSuccess = async (decodedText) => {
+// //     try {
+// //       const qrData = JSON.parse(decodedText);
+// //       const filename = qrData.qrId + ".png";
 
-//       const response = await fetch(Endpoint.QR, {
-//         method: "POST",
-//         credentials: "include",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ filename }),
-//       });
+// //       const response = await fetch(Endpoint.QR, {
+// //         method: "POST",
+// //         credentials: "include",
+// //         headers: { "Content-Type": "application/json" },
+// //         body: JSON.stringify({ filename }),
+// //       });
 
-//       const data = await response.json();
+// //       const data = await response.json();
 
-//       if (response.ok) {
-//         toast.success(data.message, { position: "top-right" });
-//         await stopScanner();
+// //       if (response.ok) {
+// //         toast.success(data.message, { position: "top-right" });
+// //         await stopScanner();
       
-//         setTimeout(() => {
-//           navigate("/studentdashboard");
-//         }, 2000);
-//       } else {
-//         toast.error(data.message, { position: "top-right" });
+// //         setTimeout(() => {
+// //           navigate("/studentdashboard");
+// //         }, 2000);
+// //       } else {
+// //         toast.error(data.message, { position: "top-right" });
        
-//         await stopScanner();
-//       }
-//     } catch (error) {
-//       toast.error("Failed to mark attendance", { position: "top-right" });
-//       console.error("Attendance API error:", error);
-//       await stopScanner();
-//     }
-//   };
+// //         await stopScanner();
+// //       }
+// //     } catch (error) {
+// //       toast.error("Failed to mark attendance", { position: "top-right" });
+// //       console.error("Attendance API error:", error);
+// //       await stopScanner();
+// //     }
+// //   };
 
-//   const startScanner = () => {
-//     setLoadingCamera(true);
-//     if (!scannerRef.current) {
-//       scannerRef.current = new Html5Qrcode(qrCodeRegionId);
-//     }
+// //   const startScanner = () => {
+// //     setLoadingCamera(true);
+// //     if (!scannerRef.current) {
+// //       scannerRef.current = new Html5Qrcode(qrCodeRegionId);
+// //     }
 
-//     Html5Qrcode.getCameras()
-//       .then((devices) => {
-//         if (devices && devices.length) {
-//           let cameraId = devices[0].id;
-//           scannerRef.current
-//             .start(
-//               cameraId,
-//               { fps: 10, qrbox: 300 },
-//               handleScanSuccess,
-//               (errorMessage) => {
-//                 console.warn("QR Scan Error", errorMessage);
-//               }
-//             )
-//             .then(() => {
-//               setScanning(true);
-//               toast.info(" Scanner Started", { position: "top-right" });
-//               setLoadingCamera(false);
-//             })
-//             .catch((err) => {
-//               toast.error("Failed to start scanner", { position: "top-right" });
-//               setLoadingCamera(false);
-//             });
-//         } else {
-//           toast.error(" No camera found", { position: "top-right" });
-//           setLoadingCamera(false);
-//         }
-//       })
-//       .catch((err) => {
-//         toast.error("Camera error", { position: "top-right" });
-//         console.error("Camera Error:", err);
-//         setLoadingCamera(false);
-//       });
-//   };
+// //     Html5Qrcode.getCameras()
+// //       .then((devices) => {
+// //         if (devices && devices.length) {
+// //           let cameraId = devices[0].id;
+// //           scannerRef.current
+// //             .start(
+// //               cameraId,
+// //               { fps: 10, qrbox: 300 },
+// //               handleScanSuccess,
+// //               (errorMessage) => {
+// //                 console.warn("QR Scan Error", errorMessage);
+// //               }
+// //             )
+// //             .then(() => {
+// //               setScanning(true);
+// //               toast.info(" Scanner Started", { position: "top-right" });
+// //               setLoadingCamera(false);
+// //             })
+// //             .catch((err) => {
+// //               toast.error("Failed to start scanner", { position: "top-right" });
+// //               setLoadingCamera(false);
+// //             });
+// //         } else {
+// //           toast.error(" No camera found", { position: "top-right" });
+// //           setLoadingCamera(false);
+// //         }
+// //       })
+// //       .catch((err) => {
+// //         toast.error("Camera error", { position: "top-right" });
+// //         console.error("Camera Error:", err);
+// //         setLoadingCamera(false);
+// //       });
+// //   };
 
-//   return <>
+// //   return <>
 
-//     < Header/>
-//     <div className="qr-scanner-container">
-//       <h2> Studnet  QR Scanner</h2>
+// //     < Header/>
+// //     <div className="qr-scanner-container">
+// //       <h2> Studnet  QR Scanner</h2>
 
-//       <div className="scanner-controls">
-//         {!scanning && !loadingCamera && (
-//           <button id="b" className="btn start-btn " onClick={startScanner}>
-//             Start Scanning
-//           </button>
-//         )}
-//         {loadingCamera && (
-//           <button className="btn loading-btn" disabled>
-//              Starting Camera...
-//           </button>
-//         )}
-//         {scanning && (
-//           <button className="btn stop-btn" onClick={stopScanner}>
-//             Stop Scanning
-//           </button>
-//         )}
-//       </div>
+// //       <div className="scanner-controls">
+// //         {!scanning && !loadingCamera && (
+// //           <button id="b" className="btn start-btn " onClick={startScanner}>
+// //             Start Scanning
+// //           </button>
+// //         )}
+// //         {loadingCamera && (
+// //           <button className="btn loading-btn" disabled>
+// //              Starting Camera...
+// //           </button>
+// //         )}
+// //         {scanning && (
+// //           <button className="btn stop-btn" onClick={stopScanner}>
+// //             Stop Scanning
+// //           </button>
+// //         )}
+// //       </div>
 
-//       <div id={qrCodeRegionId} className="qr-reader-box"></div>
+// //       <div id={qrCodeRegionId} className="qr-reader-box"></div>
 
-//       <ToastContainer />
-//     </div>
-//     <Footer/>
-//    </>
-// };
+// //       <ToastContainer />
+// //     </div>
+// //     <Footer/>
+// //    </>
+// // };
 
-// export default TQRScanner;
+// // export default TQRScanner;
+
+
+
+
+// // import React, { useRef, useState } from "react";
+// // import { Html5Qrcode } from "html5-qrcode";
+// // import { toast, ToastContainer } from "react-toastify";
+// // import "react-toastify/dist/ReactToastify.css";
+// // import Endpoint from "../../apis/Endpoint"; 
+// // import { useNavigate } from "react-router-dom";
+// // import Header from "../header/Header";
+// // import Footer from "../footer/Footer";
+// // import "../scanner/TQRScanner.css";
+
+// // function TQRScanner() {
+// //   const qrCodeRegionId = "qr-reader";
+// //   const scannerRef = useRef(null);
+// //   const [scanning, setScanning] = useState(false);
+// //   const [loadingCamera, setLoadingCamera] = useState(false);
+// //   const navigate = useNavigate();
+
+// //   const stopScanner = async () => {
+// //     if (scannerRef.current && scanning) {
+// //       try {
+// //         await scannerRef.current.stop();
+// //         scannerRef.current.clear();
+// //         setScanning(false);
+// //         toast.info("Scanner stopped", { position: "top-right" });
+// //       } catch (err) {
+// //         console.error("Stop failed", err);
+// //         toast.error("Failed to stop scanner", { position: "top-right" });
+// //       }
+// //     }
+// //   };
+
+// //   const handleScanSuccess = async (decodedText) => {
+// //     try {
+// //       const qrData = JSON.parse(decodedText);
+
+// //       if (!navigator.geolocation) {
+// //         toast.error("Geolocation not supported", { position: "top-right" });
+// //         await stopScanner();
+// //         return;
+
+// //       }
+
+// //       navigator.geolocation.getCurrentPosition(
+// //         async (position) => {
+// //           const latitude = position.coords.latitude;
+// //           const longitude = position.coords.longitude;
+
+// //           const response = await fetch(Endpoint.QR, {
+// //             method: "POST",
+// //             credentials: "include",
+// //             headers: { "Content-Type": "application/json" },
+// //             body: JSON.stringify({
+// //               qrId: qrData.qrId,
+// //               latitude,
+// //               longitude,
+// //             }),
+// //           });
+
+// //           const data = await response.json();
+
+// //           if (response.ok) {
+// //             toast.success(data.message, { position: "top-right" });
+// //             await stopScanner();
+            
+            
+// //             setTimeout(() => navigate("/studentdashboard"), 2000);
+
+// //           } else {
+// //             toast.error(data.message, { position: "top-right" });
+// //             await stopScanner();
+// //           }
+// //         },
+// //         (err) => {
+// //           console.error("GPS Error:", err);
+// //           toast.error("Failed to get your location", { position: "top-right" });
+// //           stopScanner();
+// //         },
+// //         { enableHighAccuracy: true }
+// //       );
+// //     } catch (error) {
+// //       toast.error("Invalid QR Code", { position: "top-right" });
+// //       console.error("QR Parse Error:", error);
+// //       await stopScanner();
+// //     }
+// //   };
+
+// //   const startScanner = () => {
+// //     setLoadingCamera(true);
+// //     if (!scannerRef.current) {
+// //       scannerRef.current = new Html5Qrcode(qrCodeRegionId);
+// //     }
+  
+    
+// //     Html5Qrcode.getCameras()
+// //       .then((devices) => {
+// //         if (devices && devices.length) {
+// //           let cameraId = devices[0].id;
+// //           scannerRef.current
+// //             .start(
+// //               cameraId,
+// //               { fps: 10, qrbox: 300 },
+// //               handleScanSuccess,
+// //               (errorMessage) => {
+// //                 console.warn("QR Scan Error", errorMessage);
+// //               }
+// //             )
+// //             .then(() => {
+// //               setScanning(true);
+// //               toast.info("Scanner started", { position: "top-right" });
+// //               setLoadingCamera(false);
+// //             })
+// //             .catch((err) => {
+// //               toast.error("Failed to start scanner", { position: "top-right" });
+// //               console.error("Scanner start error:", err);
+// //               setLoadingCamera(false);
+// //             });
+// //         } else {
+// //           toast.error("No camera found", { position: "top-right" });
+// //           setLoadingCamera(false);
+          
+// //         }
+// //       })
+// //       .catch((err) => {
+// //         toast.error("Camera error", { position: "top-right" });
+// //         console.error("Camera error:", err);
+// //         setLoadingCamera(false);
+        
+// //       });
+// //   };
+
+// //   return (
+// //     <>
+// //       <Header />
+// //       <div className="qr-scanner-container">
+// //         <h2>Student QR Scanner</h2>
+        
+
+// //         <div className="scanner-controls">
+// //           {!scanning && !loadingCamera && (
+// //             <button className="btn start-btn" onClick={startScanner}>
+// //               Start Scanning
+// //             </button>
+// //           )}
+// //           {loadingCamera && (
+// //             <button className="btn loading-btn" disabled>
+// //               Starting Camera...
+// //             </button>
+// //           )}
+// //           {scanning && (
+// //             <button className="btn stop-btn" onClick={stopScanner}>
+// //               Stop Scanning
+// //             </button>
+           
+// //           )}
+// //         </div>
+
+// //         <div id={qrCodeRegionId} className="qr-reader-box"></div>
+
+// //         <ToastContainer />
+// //       </div>
+// //       <Footer />
+// //     </>
+// //   );
+// // }
+
+// // export default TQRScanner;
 
 
 
@@ -150,11 +320,15 @@
 // import Footer from "../footer/Footer";
 // import "../scanner/TQRScanner.css";
 
+
+
 // function TQRScanner() {
 //   const qrCodeRegionId = "qr-reader";
 //   const scannerRef = useRef(null);
 //   const [scanning, setScanning] = useState(false);
 //   const [loadingCamera, setLoadingCamera] = useState(false);
+//   const [attendanceMarked, setAttendanceMarked] = useState(false);
+//   const [attendanceProcessing, setAttendanceProcessing] = useState(false); // 🔒 prevents multiple triggers
 //   const navigate = useNavigate();
 
 //   const stopScanner = async () => {
@@ -172,14 +346,18 @@
 //   };
 
 //   const handleScanSuccess = async (decodedText) => {
+//     if (attendanceMarked || attendanceProcessing) return; // 🔑 prevent duplicate
+
+//     setAttendanceProcessing(true);
+
 //     try {
 //       const qrData = JSON.parse(decodedText);
 
 //       if (!navigator.geolocation) {
 //         toast.error("Geolocation not supported", { position: "top-right" });
 //         await stopScanner();
+//         setAttendanceProcessing(false);
 //         return;
-
 //       }
 
 //       navigator.geolocation.getCurrentPosition(
@@ -187,35 +365,43 @@
 //           const latitude = position.coords.latitude;
 //           const longitude = position.coords.longitude;
 
-//           const response = await fetch(Endpoint.QR, {
-//             method: "POST",
-//             credentials: "include",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({
-//               qrId: qrData.qrId,
-//               latitude,
-//               longitude,
-//             }),
-//           });
+//           try {
+//             const response = await fetch(Endpoint.QR, {
+//               method: "POST",
+//               credentials: "include",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify({
+//                 qrId: qrData.qrId,
+//                 latitude,
+//                 longitude,
+              
+//               }),
+//             });
 
-//           const data = await response.json();
+//             const data = await response.json();
 
-//           if (response.ok) {
-//             toast.success(data.message, { position: "top-right" });
+//             if (response.ok) {
+//               toast.success(data.message, { position: "top-right" });
+//               setAttendanceMarked(true); // ✅ marked successfully
+//               await stopScanner();
+//               setTimeout(() => navigate("/studentdashboard"), 2000);
+//             } else {
+//               toast.error(data.message, { position: "top-right" });
+//               await stopScanner();
+//             }
+//           } catch (err) {
+//             console.error("Attendance API error:", err);
+//             toast.error("Failed to mark attendance", { position: "top-right" });
 //             await stopScanner();
-            
-            
-//             setTimeout(() => navigate("/studentdashboard"), 2000);
-
-//           } else {
-//             toast.error(data.message, { position: "top-right" });
-//             await stopScanner();
+//           } finally {
+//             setAttendanceProcessing(false);
 //           }
 //         },
 //         (err) => {
 //           console.error("GPS Error:", err);
 //           toast.error("Failed to get your location", { position: "top-right" });
 //           stopScanner();
+//           setAttendanceProcessing(false);
 //         },
 //         { enableHighAccuracy: true }
 //       );
@@ -223,20 +409,28 @@
 //       toast.error("Invalid QR Code", { position: "top-right" });
 //       console.error("QR Parse Error:", error);
 //       await stopScanner();
+//       setAttendanceProcessing(false);
 //     }
 //   };
 
 //   const startScanner = () => {
+    
+ 
 //     setLoadingCamera(true);
 //     if (!scannerRef.current) {
 //       scannerRef.current = new Html5Qrcode(qrCodeRegionId);
 //     }
-  
-    
+
 //     Html5Qrcode.getCameras()
 //       .then((devices) => {
 //         if (devices && devices.length) {
 //           let cameraId = devices[0].id;
+//           //add code somthing for mobile 
+//          const backcomera=devices.find(devices=>
+//          /back|rear|environment/i.test(devices.label)
+//          );
+// if(backcomera) cameraId=backcomera.id;
+//           //end 
 //           scannerRef.current
 //             .start(
 //               cameraId,
@@ -259,14 +453,12 @@
 //         } else {
 //           toast.error("No camera found", { position: "top-right" });
 //           setLoadingCamera(false);
-          
 //         }
 //       })
 //       .catch((err) => {
 //         toast.error("Camera error", { position: "top-right" });
 //         console.error("Camera error:", err);
 //         setLoadingCamera(false);
-        
 //       });
 //   };
 
@@ -275,7 +467,6 @@
 //       <Header />
 //       <div className="qr-scanner-container">
 //         <h2>Student QR Scanner</h2>
-        
 
 //         <div className="scanner-controls">
 //           {!scanning && !loadingCamera && (
@@ -292,7 +483,6 @@
 //             <button className="btn stop-btn" onClick={stopScanner}>
 //               Stop Scanning
 //             </button>
-           
 //           )}
 //         </div>
 
@@ -305,7 +495,13 @@
 //   );
 // }
 
+
 // export default TQRScanner;
+
+
+
+///uper wlaa working code hai
+
 
 
 
@@ -314,12 +510,12 @@ import React, { useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Endpoint from "../../apis/Endpoint"; 
 import { useNavigate } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import "../scanner/TQRScanner.css";
-
+import Endpoint from "../../apis/Endpoint";
+import api from "../../apis/api"; // Axios instance with token
 
 function TQRScanner() {
   const qrCodeRegionId = "qr-reader";
@@ -327,9 +523,10 @@ function TQRScanner() {
   const [scanning, setScanning] = useState(false);
   const [loadingCamera, setLoadingCamera] = useState(false);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
-  const [attendanceProcessing, setAttendanceProcessing] = useState(false); // 🔒 prevents multiple triggers
+  const [attendanceProcessing, setAttendanceProcessing] = useState(false); // 🔒 prevent duplicate
   const navigate = useNavigate();
 
+  // Stop scanner safely
   const stopScanner = async () => {
     if (scannerRef.current && scanning) {
       try {
@@ -344,9 +541,9 @@ function TQRScanner() {
     }
   };
 
+  // Handle QR scan success
   const handleScanSuccess = async (decodedText) => {
-    if (attendanceMarked || attendanceProcessing) return; // 🔑 prevent duplicate
-
+    if (attendanceMarked || attendanceProcessing) return; // prevent duplicate
     setAttendanceProcessing(true);
 
     try {
@@ -365,32 +562,30 @@ function TQRScanner() {
           const longitude = position.coords.longitude;
 
           try {
-            const response = await fetch(Endpoint.QR, {
-              method: "POST",
-              credentials: "include",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                qrId: qrData.qrId,
-                latitude,
-                longitude,
-              
-              }),
+            // Axios POST request with token
+            const response = await api.post(Endpoint.QR, {
+              qrId: qrData.qrId,
+              latitude,
+              longitude,
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-              toast.success(data.message, { position: "top-right" });
-              setAttendanceMarked(true); // ✅ marked successfully
+            if (response.status === 200) {
+              toast.success(response.data.message, { position: "top-right" });
+              setAttendanceMarked(true);
               await stopScanner();
               setTimeout(() => navigate("/studentdashboard"), 2000);
             } else {
-              toast.error(data.message, { position: "top-right" });
+              toast.error(response.data.message || "Attendance failed", {
+                position: "top-right",
+              });
               await stopScanner();
             }
           } catch (err) {
             console.error("Attendance API error:", err);
-            toast.error("Failed to mark attendance", { position: "top-right" });
+            toast.error(
+              err.response?.data?.message || "Failed to mark attendance",
+              { position: "top-right" }
+            );
             await stopScanner();
           } finally {
             setAttendanceProcessing(false);
@@ -412,9 +607,8 @@ function TQRScanner() {
     }
   };
 
+  // Start scanner
   const startScanner = () => {
-    
- 
     setLoadingCamera(true);
     if (!scannerRef.current) {
       scannerRef.current = new Html5Qrcode(qrCodeRegionId);
@@ -424,20 +618,17 @@ function TQRScanner() {
       .then((devices) => {
         if (devices && devices.length) {
           let cameraId = devices[0].id;
-          //add code somthing for mobile 
-         const backcomera=devices.find(devices=>
-         /back|rear|environment/i.test(devices.label)
-         );
-if(backcomera) cameraId=backcomera.id;
-          //end 
+          const backCamera = devices.find((d) =>
+            /back|rear|environment/i.test(d.label)
+          );
+          if (backCamera) cameraId = backCamera.id;
+
           scannerRef.current
             .start(
               cameraId,
-              { fps: 10, qrbox: 300 },
+              { fps: 10, qrbox: { width: 250, height: 250 } },
               handleScanSuccess,
-              (errorMessage) => {
-                console.warn("QR Scan Error", errorMessage);
-              }
+              (errorMessage) => console.warn("QR Scan Error:", errorMessage)
             )
             .then(() => {
               setScanning(true);
@@ -445,8 +636,8 @@ if(backcomera) cameraId=backcomera.id;
               setLoadingCamera(false);
             })
             .catch((err) => {
-              toast.error("Failed to start scanner", { position: "top-right" });
               console.error("Scanner start error:", err);
+              toast.error("Failed to start scanner", { position: "top-right" });
               setLoadingCamera(false);
             });
         } else {
@@ -455,8 +646,8 @@ if(backcomera) cameraId=backcomera.id;
         }
       })
       .catch((err) => {
-        toast.error("Camera error", { position: "top-right" });
         console.error("Camera error:", err);
+        toast.error("Camera error", { position: "top-right" });
         setLoadingCamera(false);
       });
   };
@@ -486,13 +677,11 @@ if(backcomera) cameraId=backcomera.id;
         </div>
 
         <div id={qrCodeRegionId} className="qr-reader-box"></div>
-
         <ToastContainer />
       </div>
       <Footer />
     </>
   );
 }
-
 
 export default TQRScanner;
