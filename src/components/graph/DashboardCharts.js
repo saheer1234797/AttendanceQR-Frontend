@@ -1718,13 +1718,9 @@
 
 
 
-
-
-
-// ✅ Fixed DashboardCharts.js
+// ✅ Fixed DashboardCharts.js (With Debug Logs)
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Pie, Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -1756,8 +1752,6 @@ ChartJS.register(
 function DashboardCharts() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token");
-  const userRole = localStorage.getItem("role");
-  const user = JSON.parse(localStorage.getItem("user")) || {};
 
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
   const [batch, setBatch] = useState("");
@@ -1772,13 +1766,15 @@ function DashboardCharts() {
   const [monthLine, setMonthLine] = useState([]);
   const [batchPercent, setBatchPercent] = useState({});
 
-  // ✅ Universal Date Parser (Localhost + Render both work)
+  // ✅ Fool-Proof Date Parser (Works both Localhost & Render)
   const parseDate = (dateStr) => {
     if (!dateStr) return null;
 
-    // अगर पहले से ISO format है (yyyy-mm-dd)
+    // Already ISO
     if (dateStr.includes("-")) {
-      return new Date(dateStr);
+      const d = new Date(dateStr);
+      console.log("KHAP 👉 ISO Date", dateStr, "=>", d);
+      return d;
     }
 
     const parts = dateStr.split("/");
@@ -1786,18 +1782,25 @@ function DashboardCharts() {
 
     let day, month, year;
 
-    // Localhost (22/7/2025 → dd/mm/yyyy)
-    // Render (7/22/2025 → mm/dd/yyyy)
     if (Number(parts[0]) > 12) {
-      [day, month, year] = parts; // dd/mm/yyyy
-    } else if (Number(parts[1]) > 12) {
-      [month, day, year] = parts; // mm/dd/yyyy
-    } else {
-      // fallback: मान लो पहला part day है
+      // Localhost: dd/mm/yyyy
       [day, month, year] = parts;
+      console.log("KHAP 👉 Localhost Format Detected", dateStr);
+    } else if (Number(parts[1]) > 12) {
+      // Render: mm/dd/yyyy
+      [month, day, year] = parts;
+      console.log("KHAP 👉 Render Format Detected", dateStr);
+    } else {
+      // Fallback assume dd/mm/yyyy
+      [day, month, year] = parts;
+      console.log("KHAP 👉 Fallback Used", dateStr);
     }
 
-    return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+    const mm = month.toString().padStart(2, "0");
+    const dd = day.toString().padStart(2, "0");
+    const d = new Date(`${year}-${mm}-${dd}`);
+    console.log("KHAP 👉 Parsed Date", dateStr, "=>", d);
+    return d;
   };
 
   useEffect(() => {
@@ -1805,6 +1808,7 @@ function DashboardCharts() {
       try {
         setLoading(true);
         const res = await api.get(Endpoint.Teacherdashbpord);
+        console.log("KHAP 👉 Raw API Response", res.data);
         setAllData(res.data.data || []);
         setLoading(false);
       } catch (err) {
@@ -1818,11 +1822,14 @@ function DashboardCharts() {
   useEffect(() => {
     if (!allData.length) return;
 
-    console.log("KHAP Debug Sample Record 👉", allData[0]);
+    console.log("KHAP 👉 First Sample Record", allData[0]);
 
     const data = allData.filter((r) => {
       const d = parseDate(r.date);
-      if (!d) return false;
+      if (!d || isNaN(d.getTime())) {
+        console.warn("KHAP ⚠️ Invalid Date Skipped", r.date);
+        return false;
+      }
 
       if (month) {
         const recordMonth = `${d.getFullYear()}-${(d.getMonth() + 1)
@@ -1837,6 +1844,8 @@ function DashboardCharts() {
 
       return true;
     });
+
+    console.log("KHAP 👉 Filtered Data", data);
 
     setFilteredData(data);
 
@@ -1871,7 +1880,7 @@ function DashboardCharts() {
         .map((d) => ({ date: d, present: dayMap[d] }))
     );
 
-    // Batch-wise % Calculation
+    // Batch-wise %
     const batchCountMap = {};
     data.forEach((r) => {
       if (!r.class) return;
@@ -1886,6 +1895,13 @@ function DashboardCharts() {
       percentMap[b] = total ? Math.round((present / total) * 100) : 0;
     });
     setBatchPercent(percentMap);
+
+    console.log("KHAP 👉 Chart Data Ready", {
+      studentPie,
+      batchBar,
+      monthLine,
+      batchPercent: percentMap,
+    });
   }, [month, batch, email, allData]);
 
   const handleLogout = () => {
@@ -1934,6 +1950,7 @@ function DashboardCharts() {
 
           {/* Charts */}
           <div className="charts-grid">
+            {/* Pie Chart */}
             <div className="chart-box">
               <h3>Student Attendance</h3>
               <Pie
@@ -1950,59 +1967,49 @@ function DashboardCharts() {
               />
             </div>
 
+            {/* Batch % Pie */}
             <div className="chart-box">
               <h3>Batch-wise Attendance %</h3>
-              <div className="batch-pie-wrapper">
-                <Pie
-                  data={{
-                    labels: Object.keys(batchPercent),
-                    datasets: [
-                      {
-                        data: Object.values(batchPercent),
-                        backgroundColor: [
-                          "#4caf50",
-                          "#2196f3",
-                          "#ff9800",
-                          "#9c27b0",
-                        ],
-                      },
-                    ],
-                  }}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: {
-                        position: "bottom",
-                        labels: {
-                          font: { size: 14 },
-                          generateLabels: (chart) => {
-                            const data = chart.data;
-                            return data.labels.map((label, i) => {
-                              const value = data.datasets[0].data[i];
-                              return {
-                                text: `${label} - ${value}%`,
-                                fillStyle: data.datasets[0].backgroundColor[i],
-                                hidden: false,
-                                index: i,
-                              };
-                            });
-                          },
-                        },
-                      },
-                      tooltip: {
-                        callbacks: {
-                          label: function (context) {
-                            return `${context.label}: ${context.parsed}%`;
-                          },
+              <Pie
+                data={{
+                  labels: Object.keys(batchPercent),
+                  datasets: [
+                    {
+                      data: Object.values(batchPercent),
+                      backgroundColor: [
+                        "#4caf50",
+                        "#2196f3",
+                        "#ff9800",
+                        "#9c27b0",
+                      ],
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      position: "bottom",
+                      labels: {
+                        generateLabels: (chart) => {
+                          const data = chart.data;
+                          return data.labels.map((label, i) => {
+                            const value = data.datasets[0].data[i];
+                            return {
+                              text: `${label} - ${value}%`,
+                              fillStyle: data.datasets[0].backgroundColor[i],
+                              hidden: false,
+                              index: i,
+                            };
+                          });
                         },
                       },
                     },
-                  }}
-                />
-              </div>
+                  },
+                }}
+              />
             </div>
 
+            {/* Batch Bar */}
             <div className="chart-box">
               <h3>Batch Attendance</h3>
               <Bar
@@ -2016,13 +2023,11 @@ function DashboardCharts() {
                     },
                   ],
                 }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { display: false } },
-                }}
+                options={{ plugins: { legend: { display: false } } }}
               />
             </div>
 
+            {/* Line Chart */}
             <div className="chart-box">
               <h3>Month-wise Trend</h3>
               <Line
@@ -2032,21 +2037,16 @@ function DashboardCharts() {
                     {
                       label: "Present Students",
                       data: monthLine.map((t) => t.present),
-                      fill: false,
                       borderColor: "#4caf50",
                       tension: 0.1,
                     },
                   ],
                 }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { position: "bottom" } },
-                }}
               />
             </div>
           </div>
 
-          {/* Attendance Table */}
+          {/* Table */}
           <div className="tablewrp">
             <table className="attendacetable">
               <thead>
@@ -2069,9 +2069,7 @@ function DashboardCharts() {
                       <td>
                         <span
                           className={`badge ${
-                            record.record === "present"
-                              ? "present"
-                              : "absent"
+                            record.record === "present" ? "present" : "absent"
                           }`}
                         >
                           {record.record || "N/A"}
