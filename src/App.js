@@ -13,12 +13,13 @@ import GenerateQR from "./components/genrqteqr/GenrateQr.js";
 import ForgotPassword from "./components/password/ForgotPassword";
 import ResetPassword from "./components/password/ResetPassword.js";
 import UploadStudents from "./components/bulk/UploadStudents.js";
-
+import DashboardCharts from "./components/graph/DashboardCharts.js";
+  
 
 import "./App.css";
 
 function App() {
-  return (
+  return <>
  
     <Router>
 
@@ -29,19 +30,20 @@ function App() {
               <Route path="/SignUp" element={<SignUp />} />
             <Route path="/Tdashboard" element={<Tdashboard />} />
              <Route path="/StudentDashboard" element={<StudentDashboard />} />
-             <Route path="/Sprofile" element={<Sprofile/>}/>
+           <Route path="/Sprofile" element={<Sprofile/>}/>
               <Route path="/TQRScanner" element={<TQRScanner/>}/>
               <Route path="/GenerateQR" element={<GenerateQR/>}/>
-              <Route path="/forgotpassword" element={<ForgotPassword/>} />
-          
-         <Route path="/reset-password/:token" element={<ResetPassword/>} />
-         <Route path="/UploadStudents" element={<UploadStudents />} />
-
            
+       <Route path="/forgotpassword" element={<ForgotPassword/>} />  
+       
+         <Route path="/reset-password/:token" element={<ResetPassword/>} />
+         <Route path="/UploadStudents" element={<UploadStudents />} /> 
+
+           <Route path="/DashboardCharts" element={<DashboardCharts/>}/>
           </Routes>
       
     </Router>
-  );
+  </>
 }
 
 export default App;

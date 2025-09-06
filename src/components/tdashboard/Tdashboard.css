@@ -122,17 +122,21 @@ body {
   text-align: left;
 }
 
-.attendance-table th {
+.attendance-table th  {
   background-color: #f3f4f6;
-  font-weight: 600;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
 
+
+  font-weight: 600;
+  position: sticky ; 
+  top: 0  ;
+  z-index: 2  ;
+}
 
 
 
 .highlight-today {
   background-color: #d1ffd6; /* light green for today */
 }
+
+
+          

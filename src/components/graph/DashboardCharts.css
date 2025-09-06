@@ -1,0 +1,366 @@
+/* .dashboard-charts {
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.chart-filters {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.chart-box {
+  flex: 1 1 300px;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+} */
+
+
+
+
+
+/* .analysis-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+.sidebar {
+  width: 220px;
+  background: #1a202c;
+  color: #fff;
+  padding: 1rem;
+}
+
+.sidebar .user-info h2 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 1rem 0;
+  cursor: pointer;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filters div {
+  display: flex;
+  flex-direction: column;
+}
+
+.charts-grid {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.chart-box {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1 1 300px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.table-wrapper {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.5rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.badge.present {
+  background-color: #4caf50;
+}
+
+.badge.absent {
+  background-color: #f44336;
+} */
+
+
+
+
+
+
+
+/* Overall Dashboard Layout */
+.analysis-dashboard {
+  width: 100%;
+  padding: 20px;
+  background: #f7f9fc;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Filters Section */
+.fitlter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.fitlter div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fitlter label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.fitlter input,
+.fitlter select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.fitlter input:focus,
+.fitlter select:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Chart Card */
+.chart-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-box h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #222;
+}
+
+.batch-pie-wrapper {
+  width: 100%;
+  height: 300px;
+}
+
+/* Attendance Table */
+/* .tablewrp {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.attendacetable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.attendacetable  th,
+.attendacetable  td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.attendacetable  th {
+  background: #f1f3f6;
+  font-weight: 600;
+  color: #333;
+} */
+
+/* add soething  */
+.tablewrp {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.attendacetable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  min-width: 600px;
+}
+
+.attendacetable th,
+.attendacetable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.attendacetable th  {
+  background-color: #f3f4f6;
+
+
+  font-weight: 600;
+  position: sticky ; 
+  top: 0  ;
+  z-index: 2  ;
+}
+
+/* add som */
+
+
+
+
+
+
+
+
+
+
+
+
+
+.attendacetable  tr:hover {
+  background: #f9fafc;
+}
+
+/* Status Badges */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+.badge.present {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.badge.absent {
+  background-color: #f44336;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .fitlter {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attendacetable th,
+  .attendacetable td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fitlter input,
+  .fitlter  select {
+    font-size: 13px;
+    padding: 7px;
+  }
+
+  .chart-box h3 {
+    font-size: 16px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+

@@ -165,11 +165,11 @@ function StudentDashboard() {
         {/* Attendance Table */}
         <div className="table-wrapper">
           <table className="attendance-table">
-            <thead>
+            <thead >
               <tr>
                 <th>Date</th>
                 <th>Class</th>
-                <th>Email</th>
+                <th>Email</th> 
                 <th>Status</th>
               </tr>
             </thead>

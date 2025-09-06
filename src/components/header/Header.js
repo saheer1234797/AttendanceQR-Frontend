@@ -37,12 +37,7 @@ function Header() {
             QR<span>Attend</span>
           </Link>
 
-          {/* Display logged-in user info */}
-          {/* {isLoggedIn && (
-            <div className="user-info" style={{ color: "white", marginRight: "1rem" }}>
-              Welcome, <strong>{userName}</strong> ({userRole})
-            </div>
-          )}   */}
+      
 
           {/* Hamburger Menu */}
           <input type="checkbox" id="menu-toggle" />
