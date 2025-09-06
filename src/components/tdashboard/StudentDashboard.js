@@ -6,6 +6,7 @@ import "./Tdashboard.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Endpoint from "../../apis/Endpoint";
+import api from "../../apis/api";
 
 function StudentDashboard() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function StudentDashboard() {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get(Endpoint.StudentAttendance, {
+      const response = await api.get(Endpoint.StudentAttendance, {
         withCredentials: true,
       });
 

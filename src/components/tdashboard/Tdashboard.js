@@ -8,6 +8,7 @@ import "./Tdashboard.css";
 
 
 import Endpoint from "../../apis/Endpoint";
+import api from "../../apis/api";
 
 
 function Tdashboard() {
@@ -38,7 +39,7 @@ function Tdashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await axios.get(Endpoint.AdminAll, desh);
+        const res = await api.get(Endpoint.AdminAll, desh);
         
         setdesh(res.data.data);
       } catch (err) {
@@ -52,7 +53,7 @@ function Tdashboard() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await axios.get(Endpoint.Teacherdashbpord, {
+        const res = await api.get(Endpoint.Teacherdashbpord, {
           withCredentials: true,
         });
 
