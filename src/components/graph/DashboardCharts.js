@@ -1717,8 +1717,6 @@
 
 
 
-
-// ✅ Fixed DashboardCharts.js (With Debug Logs)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pie, Bar, Line } from "react-chartjs-2";
@@ -1766,16 +1764,12 @@ function DashboardCharts() {
   const [monthLine, setMonthLine] = useState([]);
   const [batchPercent, setBatchPercent] = useState({});
 
-  // ✅ Fool-Proof Date Parser (Works both Localhost & Render)
+  // ✅ Universal Date Parser
   const parseDate = (dateStr) => {
     if (!dateStr) return null;
 
-    // Already ISO
-    if (dateStr.includes("-")) {
-      const d = new Date(dateStr);
-      console.log("KHAP 👉 ISO Date", dateStr, "=>", d);
-      return d;
-    }
+    // ISO format
+    if (dateStr.includes("-")) return new Date(dateStr);
 
     const parts = dateStr.split("/");
     if (parts.length !== 3) return null;
@@ -1783,53 +1777,42 @@ function DashboardCharts() {
     let day, month, year;
 
     if (Number(parts[0]) > 12) {
-      // Localhost: dd/mm/yyyy
+      // dd/mm/yyyy
       [day, month, year] = parts;
-      console.log("KHAP 👉 Localhost Format Detected", dateStr);
     } else if (Number(parts[1]) > 12) {
-      // Render: mm/dd/yyyy
+      // mm/dd/yyyy
       [month, day, year] = parts;
-      console.log("KHAP 👉 Render Format Detected", dateStr);
     } else {
       // Fallback assume dd/mm/yyyy
       [day, month, year] = parts;
-      console.log("KHAP 👉 Fallback Used", dateStr);
     }
 
-    const mm = month.toString().padStart(2, "0");
-    const dd = day.toString().padStart(2, "0");
-    const d = new Date(`${year}-${mm}-${dd}`);
-    console.log("KHAP 👉 Parsed Date", dateStr, "=>", d);
-    return d;
+    return new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
   };
 
+  // ✅ Fetch API Data
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
         setLoading(true);
         const res = await api.get(Endpoint.Teacherdashbpord);
-        console.log("KHAP 👉 Raw API Response", res.data);
         setAllData(res.data.data || []);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching attendance", err);
+      } finally {
         setLoading(false);
       }
     };
     fetchAttendance();
   }, []);
 
+  // ✅ Process Data for Charts & Table
   useEffect(() => {
     if (!allData.length) return;
 
-    console.log("KHAP 👉 First Sample Record", allData[0]);
-
     const data = allData.filter((r) => {
       const d = parseDate(r.date);
-      if (!d || isNaN(d.getTime())) {
-        console.warn("KHAP ⚠️ Invalid Date Skipped", r.date);
-        return false;
-      }
+      if (!d || isNaN(d.getTime())) return false;
 
       if (month) {
         const recordMonth = `${d.getFullYear()}-${(d.getMonth() + 1)
@@ -1839,22 +1822,20 @@ function DashboardCharts() {
       }
 
       if (batch && r.class !== batch) return false;
-      if (email && !r.email.toLowerCase().includes(email.toLowerCase()))
+      if (email && !r.email?.toLowerCase().includes(email.toLowerCase()))
         return false;
 
       return true;
     });
 
-    console.log("KHAP 👉 Filtered Data", data);
-
     setFilteredData(data);
 
-    // Student Pie Chart
+    // Pie Chart (Present/Absent)
     const presentCount = data.filter((r) => r.record === "present").length;
     const absentCount = data.filter((r) => r.record === "absent").length;
     setStudentPie({ present: presentCount, absent: absentCount });
 
-    // Batch Bar Chart
+    // Bar Chart (Batch Attendance)
     const batchMap = {};
     data.forEach((r) => {
       if (!r.class) return;
@@ -1865,7 +1846,7 @@ function DashboardCharts() {
       Object.keys(batchMap).map((b) => ({ name: b, presentDays: batchMap[b] }))
     );
 
-    // Month Line Chart
+    // Line Chart (Daily Trend)
     const dayMap = {};
     data.forEach((r) => {
       const d = parseDate(r.date);
@@ -1895,13 +1876,6 @@ function DashboardCharts() {
       percentMap[b] = total ? Math.round((present / total) * 100) : 0;
     });
     setBatchPercent(percentMap);
-
-    console.log("KHAP 👉 Chart Data Ready", {
-      studentPie,
-      batchBar,
-      monthLine,
-      batchPercent: percentMap,
-    });
   }, [month, batch, email, allData]);
 
   const handleLogout = () => {
