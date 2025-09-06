@@ -198,7 +198,8 @@ console.log("it gratitude for chaking "+longitude);
           const { filePath, qrData } = res.data;
           if (!filePath || !qrData) throw new Error("Invalid QR Response from Server");
 
-          const backendBaseURL = "http://localhost:3000";
+          // const backendBaseURL = "http://localhost:3000";
+          const backendBaseURL = process.env.REACT_APP_BACKEND_URL;
           const clientPath = filePath.startsWith("/public")
             ? `${backendBaseURL}${filePath.replace("/public", "")}`
             : `${backendBaseURL}${filePath}`;

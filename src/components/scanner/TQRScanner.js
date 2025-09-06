@@ -424,6 +424,12 @@ function TQRScanner() {
       .then((devices) => {
         if (devices && devices.length) {
           let cameraId = devices[0].id;
+          //add code somthing for mobile 
+         const backcomera=devices.find(devices=>
+         /back|rear|environment/i.test(devices.label)
+         );
+if(backcomera) cameraId=backcomera.id;
+          //end 
           scannerRef.current
             .start(
               cameraId,
