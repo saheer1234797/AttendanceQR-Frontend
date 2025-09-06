@@ -1288,6 +1288,12 @@
 
 
 
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -1353,6 +1359,7 @@ function DashboardCharts() {
         setLoading(true);
         const res = await api.get(Endpoint.Teacherdashbpord);
         setAllData(res.data.data || []);
+      
         setLoading(false);
       } catch (err) {
         console.error("Error fetching attendance", err);
@@ -1364,10 +1371,12 @@ function DashboardCharts() {
 
   useEffect(() => {
     if (!allData.length) return;
+        console.log("KHAP Debug Sample Record 👉", allData[0]);
 
     const data = allData.filter((r) => {
       const d = parseDate(r.date);
       if (!d) return false;
+        console.log("localhost Data Sample:", allData[0]);
 
       if (month) {
         const recordMonth = `${d.getFullYear()}-${(d.getMonth() + 1)
