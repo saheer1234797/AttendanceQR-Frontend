@@ -151,6 +151,7 @@ import Endpoint from "../../apis/Endpoint";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { useNavigate } from "react-router-dom";
+import api from "../../apis/api";
 
 export default function GenerateQR() {
   const [loading, setLoading] = useState(false);
@@ -180,7 +181,7 @@ export default function GenerateQR() {
 console.log("it is latitude "+latitude);
 console.log("it gratitude for chaking "+longitude);
 
-          const res = await axios.post(
+          const res = await api.post(
             Endpoint.GenerateQR,
             {
               location: {

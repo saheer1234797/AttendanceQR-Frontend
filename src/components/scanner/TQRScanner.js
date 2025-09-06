@@ -320,6 +320,7 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import "../scanner/TQRScanner.css";
 
+
 function TQRScanner() {
   const qrCodeRegionId = "qr-reader";
   const scannerRef = useRef(null);

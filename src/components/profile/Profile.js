@@ -85,6 +85,7 @@ import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { Link } from "react-router-dom";
 import "./Profile.css";
+import api from "../../apis/api";
 
 function Sprofile() {
   const [student, setStudent] = useState(null);
@@ -93,7 +94,7 @@ function Sprofile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(Endpoint.Profile, {
+        const res = await api.get(Endpoint.Profile, {
           withCredentials: true,
         });
         setStudent(res.data.user);
@@ -106,6 +107,26 @@ function Sprofile() {
 
     fetchProfile();
   }, []);
+//   useEffect(() => {
+//   const fetchProfile = async () => {
+//     try {
+//       const token = localStorage.getItem("token"); // Login के बाद save किया था
+//       const res = await axios.get(Endpoint.Profile, {
+//         headers: {
+//           Authorization: `Bearer ${token}`
+//         }
+//       });
+//       setStudent(res.data.user);
+//     } catch (error) {
+//       console.error("Error fetching profile:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   fetchProfile();
+// }, []);
+
 
   if (loading) {
     return <div className="loading">Loading profile...</div>;
