@@ -6,6 +6,7 @@ import EndPoint from '../../apis/Endpoint';
 import { toast, ToastContainer } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import api from '../../apis/api';
 
 function SignUp() {
   const [state, setState] = useState({
@@ -47,7 +48,7 @@ function SignUp() {
     };
 
     try {
-      const response = await axios.post(EndPoint.SignUp, payload, {
+      const response = await api.post(EndPoint.SignUp, payload, {
         withCredentials: true,
       });
       toast.success(response.data.message);
